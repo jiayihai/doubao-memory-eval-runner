@@ -1,0 +1,28 @@
+# Runtime data and local settings
+/运行数据/
+/对话导出/
+/启动错误.log
+*.log
+.env
+.env.*
+!.env.example
+
+# Dependencies / local links / build products
+node_modules/
+output/
+dist/
+coverage/
+*.exe
+*.exe.config
+*.lnk
+*.zip
+*.inspect.ndjson
+
+# Machine-specific and optional private fixtures
+/examples/optional/
+/examples/legacy/*.xlsx
+settings.local.json
+.DS_Store
+Thumbs.db
+~$*
+*.tmp

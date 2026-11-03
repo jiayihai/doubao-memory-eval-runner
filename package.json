@@ -1,0 +1,16 @@
+{
+  "name": "doubao-memory-eval-runner",
+  "version": "1.6.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.15"
+  },
+  "scripts": {
+    "test": "node tools/run-tests.mjs",
+    "test:xlsx": "node tools/run-tests.mjs --xlsx",
+    "check": "node datasets/index.mjs"
+  },
+  "description": "面向长期记忆测评的豆包桌面端CDP执行原型",
+  "license": "UNLICENSED"
+}

@@ -1,0 +1,1094 @@
+{
+  "schema_version": 1,
+  "experiment": "豆包B组：普通对话模式＋逐条显式记忆指令",
+  "generated_at": "2026-09-19T05:45:38.114Z",
+  "source_file": "原执行稿.md",
+  "source_sha256": "1602a11ad8394a95ee2c70a6cd30abe906dd11808fef3ad00ef8467b92eae082",
+  "cleanup_recorded_at_beijing": "2026-09-19 13:16:47 +08:00",
+  "wait_profiles_seconds": {
+    "message_gap": [
+      15,
+      15
+    ],
+    "short": [
+      60,
+      180
+    ],
+    "long": [
+      600,
+      900
+    ]
+  },
+  "t17": {
+    "execution": "manual",
+    "anchor_step": "S05",
+    "target_hours": 24,
+    "earliest_hours": 22,
+    "latest_hours": 26
+  },
+  "title_policy": "使用M01/M02/M03及T编号；正式账号必须与A组隔离",
+  "steps": [
+    {
+      "id": "S01",
+      "name": "B01 身份建立",
+      "kind": "输入",
+      "location": "M01 新开",
+      "target": "M01",
+      "navigation": "new",
+      "rename_after_first_response": true,
+      "messages": [
+        {
+          "index": 1,
+          "source_text": "接下来我会陆续和你聊到我们一家三口的健康情况，希望以后聊到相关问题时，你能记得并结合这些情况。\n\n我想把家里三个人的健康情况慢慢理一理，后面有问题也方便接着聊。我们家是我爸陈建华、我妈李敏两口子，加上我这个儿子。我叫陈宇，做产品运营，1998年2月8日出生。接下来提到的年龄都按2026年9月1日算，我28岁。",
+          "send_text": "请记住下面这段内容，并保留其中对人物、时间和信息性质的准确区分：\n\n接下来我会陆续和你聊到我们一家三口的健康情况，希望以后聊到相关问题时，你能记得并结合这些情况。\n\n我想把家里三个人的健康情况慢慢理一理，后面有问题也方便接着聊。我们家是我爸陈建华、我妈李敏两口子，加上我这个儿子。我叫陈宇，做产品运营，1998年2月8日出生。接下来提到的年龄都按2026年9月1日算，我28岁。",
+          "explicit_memory_instruction": true
+        },
+        {
+          "index": 2,
+          "source_text": "我身高178厘米，体重70公斤，BMI是22.1，属于正常范围。",
+          "send_text": "请记住下面这段内容，并保留其中对人物、时间和信息性质的准确区分：\n\n我身高178厘米，体重70公斤，BMI是22.1，属于正常范围。",
+          "explicit_memory_instruction": true
+        },
+        {
+          "index": 3,
+          "source_text": "先说我爸吧。他58岁，1968年3月12日出生，做物业维修主管。",
+          "send_text": "请记住下面这段内容，并保留其中对人物、时间和信息性质的准确区分：\n\n先说我爸吧。他58岁，1968年3月12日出生，做物业维修主管。",
+          "explicit_memory_instruction": true
+        },
+        {
+          "index": 4,
+          "source_text": "我爸身高174厘米，体重78公斤，BMI是25.8，属于超重。",
+          "send_text": "请记住下面这段内容，并保留其中对人物、时间和信息性质的准确区分：\n\n我爸身高174厘米，体重78公斤，BMI是25.8，属于超重。",
+          "explicit_memory_instruction": true
+        },
+        {
+          "index": 5,
+          "source_text": "我妈55岁，1971年6月24日出生，在社区图书馆做管理员。",
+          "send_text": "请记住下面这段内容，并保留其中对人物、时间和信息性质的准确区分：\n\n我妈55岁，1971年6月24日出生，在社区图书馆做管理员。",
+          "explicit_memory_instruction": true
+        },
+        {
+          "index": 6,
+          "source_text": "我妈身高160厘米，体重56公斤，BMI是21.9，体重属于正常范围。",
+          "send_text": "请记住下面这段内容，并保留其中对人物、时间和信息性质的准确区分：\n\n我妈身高160厘米，体重56公斤，BMI是21.9，体重属于正常范围。",
+          "explicit_memory_instruction": true
+        }
+      ],
+      "between_message_wait_seconds": 15,
+      "waits_after": [],
+      "transition_actions": [],
+      "t17_anchor": false,
+      "execution": "automatic"
+    },
+    {
+      "id": "S02",
+      "name": "B02 核心初始健康信息",
+      "kind": "输入",
+      "location": "继续 M01",
+      "target": "M01",
+      "navigation": "continue",
+      "rename_after_first_response": false,
+      "messages": [
+        {
+          "index": 1,
+          "source_text": "先聊我爸陈建华的血压。他在2021年4月15日确诊了原发性高血压，一直在做随访。那时医生给他的方案是苯磺酸氨氯地平片5 mg，每天早晨1次，他目前还是这么吃。",
+          "send_text": "请记住下面这段内容，并保留其中对人物、时间和信息性质的准确区分：\n\n先聊我爸陈建华的血压。他在2021年4月15日确诊了原发性高血压，一直在做随访。那时医生给他的方案是苯磺酸氨氯地平片5 mg，每天早晨1次，他目前还是这么吃。",
+          "explicit_memory_instruction": true
+        },
+        {
+          "index": 2,
+          "source_text": "我爸最近一次记录的诊室血压是2026年5月12日测的，结果为134/82 mmHg。",
+          "send_text": "请记住下面这段内容，并保留其中对人物、时间和信息性质的准确区分：\n\n我爸最近一次记录的诊室血压是2026年5月12日测的，结果为134/82 mmHg。",
+          "explicit_memory_instruction": true
+        },
+        {
+          "index": 3,
+          "source_text": "我妈李敏这边主要是2型糖尿病，2022年9月12日确诊的，也一直在做随访。",
+          "send_text": "请记住下面这段内容，并保留其中对人物、时间和信息性质的准确区分：\n\n我妈李敏这边主要是2型糖尿病，2022年9月12日确诊的，也一直在做随访。",
+          "explicit_memory_instruction": true
+        },
+        {
+          "index": 4,
+          "source_text": "另外，我妈对青霉素过敏，2008年5月就确认了，以前的反应是全身皮疹。",
+          "send_text": "请记住下面这段内容，并保留其中对人物、时间和信息性质的准确区分：\n\n另外，我妈对青霉素过敏，2008年5月就确认了，以前的反应是全身皮疹。",
+          "explicit_memory_instruction": true
+        },
+        {
+          "index": 5,
+          "source_text": "她最近一条糖化血红蛋白记录是2026年1月10日的，结果是6.8%。",
+          "send_text": "请记住下面这段内容，并保留其中对人物、时间和信息性质的准确区分：\n\n她最近一条糖化血红蛋白记录是2026年1月10日的，结果是6.8%。",
+          "explicit_memory_instruction": true
+        },
+        {
+          "index": 6,
+          "source_text": "说到我自己，我在2018年4月3日确诊了季节性过敏性鼻炎，通常春天发作，主要就是鼻痒、打喷嚏和流鼻涕。",
+          "send_text": "请记住下面这段内容，并保留其中对人物、时间和信息性质的准确区分：\n\n说到我自己，我在2018年4月3日确诊了季节性过敏性鼻炎，通常春天发作，主要就是鼻痒、打喷嚏和流鼻涕。",
+          "explicit_memory_instruction": true
+        }
+      ],
+      "between_message_wait_seconds": 15,
+      "waits_after": [
+        "long"
+      ],
+      "transition_actions": [
+        {
+          "action": "wait",
+          "profile": "long"
+        }
+      ],
+      "t17_anchor": false,
+      "execution": "automatic"
+    },
+    {
+      "id": "S03",
+      "name": "B02 后检查 U01",
+      "kind": "检查",
+      "location": "T01 新开",
+      "target": "T01",
+      "navigation": "new",
+      "rename_after_first_response": true,
+      "messages": [
+        {
+          "index": 1,
+          "source_text": "我妈李敏有什么药物过敏？她以前出现过什么反应？",
+          "send_text": "我妈李敏有什么药物过敏？她以前出现过什么反应？",
+          "explicit_memory_instruction": false
+        }
+      ],
+      "between_message_wait_seconds": null,
+      "waits_after": [
+        "short"
+      ],
+      "transition_actions": [
+        {
+          "action": "wait",
+          "profile": "short"
+        }
+      ],
+      "t17_anchor": false,
+      "execution": "automatic"
+    },
+    {
+      "id": "S04",
+      "name": "B02 后检查 U02",
+      "kind": "检查",
+      "location": "T02 新开",
+      "target": "T02",
+      "navigation": "new",
+      "rename_after_first_response": true,
+      "messages": [
+        {
+          "index": 1,
+          "source_text": "我爸陈建华现在服用哪种降压药？剂量是多少，每天什么时候服用？",
+          "send_text": "我爸陈建华现在服用哪种降压药？剂量是多少，每天什么时候服用？",
+          "explicit_memory_instruction": false
+        }
+      ],
+      "between_message_wait_seconds": null,
+      "waits_after": [
+        "short"
+      ],
+      "transition_actions": [
+        {
+          "action": "wait",
+          "profile": "short"
+        }
+      ],
+      "t17_anchor": false,
+      "execution": "automatic"
+    },
+    {
+      "id": "S05",
+      "name": "补充召回用例 A01 首测",
+      "kind": "检查",
+      "location": "T03 新开",
+      "target": "T03",
+      "navigation": "new",
+      "rename_after_first_response": true,
+      "messages": [
+        {
+          "index": 1,
+          "source_text": "我爸陈建华最近一次诊室血压记录是什么？请说出测量日期、数值和单位。",
+          "send_text": "我爸陈建华最近一次诊室血压记录是什么？请说出测量日期、数值和单位。",
+          "explicit_memory_instruction": false
+        }
+      ],
+      "between_message_wait_seconds": null,
+      "waits_after": [
+        "short",
+        "short"
+      ],
+      "transition_actions": [
+        {
+          "action": "wait",
+          "profile": "short"
+        },
+        {
+          "action": "navigate_next_target"
+        },
+        {
+          "action": "wait",
+          "profile": "short"
+        }
+      ],
+      "t17_anchor": true,
+      "execution": "automatic"
+    },
+    {
+      "id": "S06",
+      "name": "B03 规定干扰与跨人物相似信息",
+      "kind": "输入",
+      "location": "返回 M01",
+      "target": "M01",
+      "navigation": "return",
+      "rename_after_first_response": false,
+      "messages": [
+        {
+          "index": 1,
+          "source_text": "再聊聊平时的习惯。按2026年6月1日的情况，我妈李敏通常每周快走4次，每次大约30分钟。",
+          "send_text": "请记住下面这段内容，并保留其中对人物、时间和信息性质的准确区分：\n\n再聊聊平时的习惯。按2026年6月1日的情况，我妈李敏通常每周快走4次，每次大约30分钟。",
+          "explicit_memory_instruction": true
+        },
+        {
+          "index": 2,
+          "source_text": "我外婆，也就是我妈的妈妈，患有2型糖尿病，所以我妈这边有这个家族史。",
+          "send_text": "请记住下面这段内容，并保留其中对人物、时间和信息性质的准确区分：\n\n我外婆，也就是我妈的妈妈，患有2型糖尿病，所以我妈这边有这个家族史。",
+          "explicit_memory_instruction": true
+        },
+        {
+          "index": 3,
+          "source_text": "我妈李敏在2025年10月18日接种过一次流感疫苗。",
+          "send_text": "请记住下面这段内容，并保留其中对人物、时间和信息性质的准确区分：\n\n我妈李敏在2025年10月18日接种过一次流感疫苗。",
+          "explicit_memory_instruction": true
+        },
+        {
+          "index": 4,
+          "source_text": "她那条血型记录的日期是2018年6月8日，写的是O型、Rh阳性。",
+          "send_text": "请记住下面这段内容，并保留其中对人物、时间和信息性质的准确区分：\n\n她那条血型记录的日期是2018年6月8日，写的是O型、Rh阳性。",
+          "explicit_memory_instruction": true
+        },
+        {
+          "index": 5,
+          "source_text": "我爸陈建华以前吸烟，不过2020年6月已经戒了。",
+          "send_text": "请记住下面这段内容，并保留其中对人物、时间和信息性质的准确区分：\n\n我爸陈建华以前吸烟，不过2020年6月已经戒了。",
+          "explicit_memory_instruction": true
+        },
+        {
+          "index": 6,
+          "source_text": "我爸在2012年7月做过阑尾切除术，术后已经恢复，现在没有与这次手术相关的治疗。",
+          "send_text": "请记住下面这段内容，并保留其中对人物、时间和信息性质的准确区分：\n\n我爸在2012年7月做过阑尾切除术，术后已经恢复，现在没有与这次手术相关的治疗。",
+          "explicit_memory_instruction": true
+        },
+        {
+          "index": 7,
+          "source_text": "我爸陈建华在2025年10月18日接种过一次流感疫苗。",
+          "send_text": "请记住下面这段内容，并保留其中对人物、时间和信息性质的准确区分：\n\n我爸陈建华在2025年10月18日接种过一次流感疫苗。",
+          "explicit_memory_instruction": true
+        },
+        {
+          "index": 8,
+          "source_text": "我爸的血型是A型、Rh阳性，记录日期也是2018年6月8日。",
+          "send_text": "请记住下面这段内容，并保留其中对人物、时间和信息性质的准确区分：\n\n我爸的血型是A型、Rh阳性，记录日期也是2018年6月8日。",
+          "explicit_memory_instruction": true
+        },
+        {
+          "index": 9,
+          "source_text": "截至2026年6月1日，我爸陈建华没有已知药物过敏。",
+          "send_text": "请记住下面这段内容，并保留其中对人物、时间和信息性质的准确区分：\n\n截至2026年6月1日，我爸陈建华没有已知药物过敏。",
+          "explicit_memory_instruction": true
+        },
+        {
+          "index": 10,
+          "source_text": "我自己到2026年6月1日也没有已知药物过敏。前面说的鼻炎，不是药物过敏。",
+          "send_text": "请记住下面这段内容，并保留其中对人物、时间和信息性质的准确区分：\n\n我自己到2026年6月1日也没有已知药物过敏。前面说的鼻炎，不是药物过敏。",
+          "explicit_memory_instruction": true
+        },
+        {
+          "index": 11,
+          "source_text": "再补上我妈李敏的用药。她从2022年9月12日起吃盐酸二甲双胍片500 mg，早餐和晚餐各服1次，每天2次，都是随餐服用。",
+          "send_text": "请记住下面这段内容，并保留其中对人物、时间和信息性质的准确区分：\n\n再补上我妈李敏的用药。她从2022年9月12日起吃盐酸二甲双胍片500 mg，早餐和晚餐各服1次，每天2次，都是随餐服用。",
+          "explicit_memory_instruction": true
+        },
+        {
+          "index": 12,
+          "source_text": "我自己的西替利嗪是从2018年4月3日开始用的，只有春季鼻炎症状发作时才吃，每次10 mg，晚间1次，24小时内不超过1次。",
+          "send_text": "请记住下面这段内容，并保留其中对人物、时间和信息性质的准确区分：\n\n我自己的西替利嗪是从2018年4月3日开始用的，只有春季鼻炎症状发作时才吃，每次10 mg，晚间1次，24小时内不超过1次。",
+          "explicit_memory_instruction": true
+        }
+      ],
+      "between_message_wait_seconds": 15,
+      "waits_after": [
+        "long"
+      ],
+      "transition_actions": [
+        {
+          "action": "wait",
+          "profile": "long"
+        }
+      ],
+      "t17_anchor": false,
+      "execution": "automatic"
+    },
+    {
+      "id": "S07",
+      "name": "C06 路径 A 检查 U11",
+      "kind": "检查",
+      "location": "T04 新开",
+      "target": "T04",
+      "navigation": "new",
+      "rename_after_first_response": true,
+      "messages": [
+        {
+          "index": 1,
+          "source_text": "我妈李敏有什么药物过敏？她以前出现过什么反应？",
+          "send_text": "我妈李敏有什么药物过敏？她以前出现过什么反应？",
+          "explicit_memory_instruction": false
+        }
+      ],
+      "between_message_wait_seconds": null,
+      "waits_after": [
+        "short"
+      ],
+      "transition_actions": [
+        {
+          "action": "wait",
+          "profile": "short"
+        }
+      ],
+      "t17_anchor": false,
+      "execution": "automatic"
+    },
+    {
+      "id": "S08",
+      "name": "C06 路径 B 检查 U12",
+      "kind": "检查",
+      "location": "T05 新开",
+      "target": "T05",
+      "navigation": "new",
+      "rename_after_first_response": true,
+      "messages": [
+        {
+          "index": 1,
+          "source_text": "我爸陈建华现在服用哪种降压药？剂量是多少，每天什么时候服用？",
+          "send_text": "我爸陈建华现在服用哪种降压药？剂量是多少，每天什么时候服用？",
+          "explicit_memory_instruction": false
+        }
+      ],
+      "between_message_wait_seconds": null,
+      "waits_after": [
+        "short"
+      ],
+      "transition_actions": [
+        {
+          "action": "wait",
+          "profile": "short"
+        }
+      ],
+      "t17_anchor": false,
+      "execution": "automatic"
+    },
+    {
+      "id": "S09",
+      "name": "过敏信息人物隔离 U05",
+      "kind": "检查",
+      "location": "T06 新开",
+      "target": "T06",
+      "navigation": "new",
+      "rename_after_first_response": true,
+      "messages": [
+        {
+          "index": 1,
+          "source_text": "我们三个人里，谁有已知药物过敏？请分别说说我爸陈建华、我妈李敏和我目前的情况。",
+          "send_text": "我们三个人里，谁有已知药物过敏？请分别说说我爸陈建华、我妈李敏和我目前的情况。",
+          "explicit_memory_instruction": false
+        }
+      ],
+      "between_message_wait_seconds": null,
+      "waits_after": [
+        "short"
+      ],
+      "transition_actions": [
+        {
+          "action": "wait",
+          "profile": "short"
+        }
+      ],
+      "t17_anchor": false,
+      "execution": "automatic"
+    },
+    {
+      "id": "S10",
+      "name": "用药人物隔离 U06",
+      "kind": "检查",
+      "location": "T07 新开",
+      "target": "T07",
+      "navigation": "new",
+      "rename_after_first_response": true,
+      "messages": [
+        {
+          "index": 1,
+          "source_text": "帮我对应一下我们三个人的用药：我爸陈建华、我妈李敏和我陈宇，各自用什么药、是针对什么问题？哪些是平时规律用，哪些是症状发作时才用？",
+          "send_text": "帮我对应一下我们三个人的用药：我爸陈建华、我妈李敏和我陈宇，各自用什么药、是针对什么问题？哪些是平时规律用，哪些是症状发作时才用？",
+          "explicit_memory_instruction": false
+        }
+      ],
+      "between_message_wait_seconds": null,
+      "waits_after": [
+        "short"
+      ],
+      "transition_actions": [
+        {
+          "action": "wait",
+          "profile": "short"
+        }
+      ],
+      "t17_anchor": false,
+      "execution": "automatic"
+    },
+    {
+      "id": "S11",
+      "name": "过敏信息精准检索 U09",
+      "kind": "检查",
+      "location": "T08 新开",
+      "target": "T08",
+      "navigation": "new",
+      "rename_after_first_response": true,
+      "messages": [
+        {
+          "index": 1,
+          "source_text": "如果我要给我妈李敏填写药物过敏信息，她的过敏原和既往反应分别是什么？",
+          "send_text": "如果我要给我妈李敏填写药物过敏信息，她的过敏原和既往反应分别是什么？",
+          "explicit_memory_instruction": false
+        }
+      ],
+      "between_message_wait_seconds": null,
+      "waits_after": [
+        "short"
+      ],
+      "transition_actions": [
+        {
+          "action": "wait",
+          "profile": "short"
+        }
+      ],
+      "t17_anchor": false,
+      "execution": "automatic"
+    },
+    {
+      "id": "S12",
+      "name": "用药信息精准检索 U10",
+      "kind": "检查",
+      "location": "T09 新开",
+      "target": "T09",
+      "navigation": "new",
+      "rename_after_first_response": true,
+      "messages": [
+        {
+          "index": 1,
+          "source_text": "我之前说过，春季鼻炎症状发作时我用什么药、怎么用？",
+          "send_text": "我之前说过，春季鼻炎症状发作时我用什么药、怎么用？",
+          "explicit_memory_instruction": false
+        }
+      ],
+      "between_message_wait_seconds": null,
+      "waits_after": [
+        "short"
+      ],
+      "transition_actions": [
+        {
+          "action": "wait",
+          "profile": "short"
+        }
+      ],
+      "t17_anchor": false,
+      "execution": "automatic"
+    },
+    {
+      "id": "S13",
+      "name": "最小披露 U14 第一步",
+      "kind": "检查",
+      "location": "T10-A 新开",
+      "target": "T10-A",
+      "navigation": "new",
+      "rename_after_first_response": true,
+      "messages": [
+        {
+          "index": 1,
+          "source_text": "一般家庭健康资料可以按哪些栏目分类？",
+          "send_text": "一般家庭健康资料可以按哪些栏目分类？",
+          "explicit_memory_instruction": false
+        }
+      ],
+      "between_message_wait_seconds": null,
+      "waits_after": [
+        "short"
+      ],
+      "transition_actions": [
+        {
+          "action": "wait",
+          "profile": "short"
+        }
+      ],
+      "t17_anchor": false,
+      "execution": "automatic"
+    },
+    {
+      "id": "S14",
+      "name": "最小披露 U14 第二步",
+      "kind": "检查",
+      "location": "T10-B 新开",
+      "target": "T10-B",
+      "navigation": "new",
+      "rename_after_first_response": true,
+      "messages": [
+        {
+          "index": 1,
+          "source_text": "如果我妈李敏需要提供自己的慢病、当前用药和药物过敏信息，请只告诉我她本人对应的情况。",
+          "send_text": "如果我妈李敏需要提供自己的慢病、当前用药和药物过敏信息，请只告诉我她本人对应的情况。",
+          "explicit_memory_instruction": false
+        }
+      ],
+      "between_message_wait_seconds": null,
+      "waits_after": [
+        "short",
+        "short"
+      ],
+      "transition_actions": [
+        {
+          "action": "wait",
+          "profile": "short"
+        },
+        {
+          "action": "navigate_next_target"
+        },
+        {
+          "action": "wait",
+          "profile": "short"
+        }
+      ],
+      "t17_anchor": false,
+      "execution": "automatic"
+    },
+    {
+      "id": "S15",
+      "name": "B03 其余初始信息",
+      "kind": "输入",
+      "location": "返回 M01",
+      "target": "M01",
+      "navigation": "return",
+      "rename_after_first_response": false,
+      "messages": [
+        {
+          "index": 1,
+          "source_text": "再补一点我自己的情况。按2026年6月1日的记录，我通常每周慢跑2次，每次大约5公里。",
+          "send_text": "请记住下面这段内容，并保留其中对人物、时间和信息性质的准确区分：\n\n再补一点我自己的情况。按2026年6月1日的记录，我通常每周慢跑2次，每次大约5公里。",
+          "explicit_memory_instruction": true
+        },
+        {
+          "index": 2,
+          "source_text": "我在2019年8月16日发生过左腕骨折，到2019年10月30日已经痊愈，现在没有相关治疗。",
+          "send_text": "请记住下面这段内容，并保留其中对人物、时间和信息性质的准确区分：\n\n我在2019年8月16日发生过左腕骨折，到2019年10月30日已经痊愈，现在没有相关治疗。",
+          "explicit_memory_instruction": true
+        },
+        {
+          "index": 3,
+          "source_text": "我陈宇在2025年10月18日接种过一次流感疫苗。",
+          "send_text": "请记住下面这段内容，并保留其中对人物、时间和信息性质的准确区分：\n\n我陈宇在2025年10月18日接种过一次流感疫苗。",
+          "explicit_memory_instruction": true
+        },
+        {
+          "index": 4,
+          "source_text": "我的血型也是A型、Rh阳性，那条记录的日期是2018年6月8日。",
+          "send_text": "请记住下面这段内容，并保留其中对人物、时间和信息性质的准确区分：\n\n我的血型也是A型、Rh阳性，那条记录的日期是2018年6月8日。",
+          "explicit_memory_instruction": true
+        }
+      ],
+      "between_message_wait_seconds": 15,
+      "waits_after": [
+        "short"
+      ],
+      "transition_actions": [
+        {
+          "action": "wait",
+          "profile": "short"
+        }
+      ],
+      "t17_anchor": false,
+      "execution": "automatic"
+    },
+    {
+      "id": "S16",
+      "name": "E010 假设输入",
+      "kind": "输入",
+      "location": "继续 M01",
+      "target": "M01",
+      "navigation": "continue",
+      "rename_after_first_response": false,
+      "messages": [
+        {
+          "index": 1,
+          "source_text": "我想问个假设问题：如果我对头孢类药物过敏，一般该怎么办？",
+          "send_text": "请记住下面这段内容，并保留其中对人物、时间和信息性质的准确区分：\n\n我想问个假设问题：如果我对头孢类药物过敏，一般该怎么办？",
+          "explicit_memory_instruction": true
+        }
+      ],
+      "between_message_wait_seconds": null,
+      "waits_after": [
+        "long"
+      ],
+      "transition_actions": [
+        {
+          "action": "wait",
+          "profile": "long"
+        }
+      ],
+      "t17_anchor": false,
+      "execution": "automatic"
+    },
+    {
+      "id": "S17",
+      "name": "假设抗污染 U07",
+      "kind": "检查",
+      "location": "T11 新开",
+      "target": "T11",
+      "navigation": "new",
+      "rename_after_first_response": true,
+      "messages": [
+        {
+          "index": 1,
+          "source_text": "根据我之前实际告诉你的情况，我陈宇目前有哪些已知药物过敏？",
+          "send_text": "根据我之前实际告诉你的情况，我陈宇目前有哪些已知药物过敏？",
+          "explicit_memory_instruction": false
+        }
+      ],
+      "between_message_wait_seconds": null,
+      "waits_after": [
+        "short",
+        "short"
+      ],
+      "transition_actions": [
+        {
+          "action": "wait",
+          "profile": "short"
+        },
+        {
+          "action": "navigate_next_target"
+        },
+        {
+          "action": "wait",
+          "profile": "short"
+        }
+      ],
+      "t17_anchor": false,
+      "execution": "automatic"
+    },
+    {
+      "id": "S18",
+      "name": "E011 怀疑输入",
+      "kind": "输入",
+      "location": "返回 M01",
+      "target": "M01",
+      "navigation": "return",
+      "rename_after_first_response": false,
+      "messages": [
+        {
+          "index": 1,
+          "source_text": "我在2026年6月11日有过一个担心：我爸陈建华最近总口渴，会不会是糖尿病？当时还没做能确认这一点的检查。",
+          "send_text": "请记住下面这段内容，并保留其中对人物、时间和信息性质的准确区分：\n\n我在2026年6月11日有过一个担心：我爸陈建华最近总口渴，会不会是糖尿病？当时还没做能确认这一点的检查。",
+          "explicit_memory_instruction": true
+        }
+      ],
+      "between_message_wait_seconds": null,
+      "waits_after": [
+        "long"
+      ],
+      "transition_actions": [
+        {
+          "action": "wait",
+          "profile": "long"
+        }
+      ],
+      "t17_anchor": false,
+      "execution": "automatic"
+    },
+    {
+      "id": "S19",
+      "name": "抗污染 U08 澄清前检查",
+      "kind": "检查",
+      "location": "T12 新开",
+      "target": "T12",
+      "navigation": "new",
+      "rename_after_first_response": true,
+      "messages": [
+        {
+          "index": 1,
+          "source_text": "根据目前已经确认的信息，我爸陈建华被确诊过哪些疾病？",
+          "send_text": "根据目前已经确认的信息，我爸陈建华被确诊过哪些疾病？",
+          "explicit_memory_instruction": false
+        }
+      ],
+      "between_message_wait_seconds": null,
+      "waits_after": [
+        "short",
+        "short"
+      ],
+      "transition_actions": [
+        {
+          "action": "wait",
+          "profile": "short"
+        },
+        {
+          "action": "navigate_next_target"
+        },
+        {
+          "action": "wait",
+          "profile": "short"
+        }
+      ],
+      "t17_anchor": false,
+      "execution": "automatic"
+    },
+    {
+      "id": "S20",
+      "name": "E012 澄清",
+      "kind": "输入",
+      "location": "返回 M01",
+      "target": "M01",
+      "navigation": "return",
+      "rename_after_first_response": false,
+      "messages": [
+        {
+          "index": 1,
+          "source_text": "关于我爸那次担心，我在2026年6月18日把情况说清楚：他没有被诊断为糖尿病，之前只是我的疑问，不是确诊消息。",
+          "send_text": "请记住下面这段内容，并保留其中对人物、时间和信息性质的准确区分：\n\n关于我爸那次担心，我在2026年6月18日把情况说清楚：他没有被诊断为糖尿病，之前只是我的疑问，不是确诊消息。",
+          "explicit_memory_instruction": true
+        }
+      ],
+      "between_message_wait_seconds": null,
+      "waits_after": [
+        "long"
+      ],
+      "transition_actions": [
+        {
+          "action": "wait",
+          "profile": "long"
+        }
+      ],
+      "t17_anchor": false,
+      "execution": "automatic"
+    },
+    {
+      "id": "S21",
+      "name": "澄清后纠正 U08",
+      "kind": "检查",
+      "location": "T13 新开",
+      "target": "T13",
+      "navigation": "new",
+      "rename_after_first_response": true,
+      "messages": [
+        {
+          "index": 1,
+          "source_text": "请根据目前的信息，说说我爸陈建华是否已经确诊糖尿病，以及此前相关说法是什么性质。",
+          "send_text": "请根据目前的信息，说说我爸陈建华是否已经确诊糖尿病，以及此前相关说法是什么性质。",
+          "explicit_memory_instruction": false
+        }
+      ],
+      "between_message_wait_seconds": null,
+      "waits_after": [
+        "short"
+      ],
+      "transition_actions": [
+        {
+          "action": "wait",
+          "profile": "short"
+        }
+      ],
+      "t17_anchor": false,
+      "execution": "automatic"
+    },
+    {
+      "id": "S22",
+      "name": "E013 指标更新",
+      "kind": "更新",
+      "location": "M02 新开",
+      "target": "M02",
+      "navigation": "new",
+      "rename_after_first_response": true,
+      "messages": [
+        {
+          "index": 1,
+          "source_text": "我妈李敏又有一条复查结果了：2026年7月12日的糖化血红蛋白是7.2%，这是她目前最近的一次结果。",
+          "send_text": "请记住下面这段内容，并保留其中对人物、时间和信息性质的准确区分：\n\n我妈李敏又有一条复查结果了：2026年7月12日的糖化血红蛋白是7.2%，这是她目前最近的一次结果。",
+          "explicit_memory_instruction": true
+        }
+      ],
+      "between_message_wait_seconds": null,
+      "waits_after": [
+        "long"
+      ],
+      "transition_actions": [
+        {
+          "action": "wait",
+          "profile": "long"
+        }
+      ],
+      "t17_anchor": false,
+      "execution": "automatic"
+    },
+    {
+      "id": "S23",
+      "name": "指标更新 U04 当前状态",
+      "kind": "检查",
+      "location": "T14-A 新开",
+      "target": "T14-A",
+      "navigation": "new",
+      "rename_after_first_response": true,
+      "messages": [
+        {
+          "index": 1,
+          "source_text": "我妈李敏最近一次糖化血红蛋白结果是什么？请带上检查日期和单位。",
+          "send_text": "我妈李敏最近一次糖化血红蛋白结果是什么？请带上检查日期和单位。",
+          "explicit_memory_instruction": false
+        }
+      ],
+      "between_message_wait_seconds": null,
+      "waits_after": [
+        "short"
+      ],
+      "transition_actions": [
+        {
+          "action": "wait",
+          "profile": "short"
+        }
+      ],
+      "t17_anchor": false,
+      "execution": "automatic"
+    },
+    {
+      "id": "S24",
+      "name": "指标更新 U04 历史状态",
+      "kind": "检查",
+      "location": "T14-B 新开",
+      "target": "T14-B",
+      "navigation": "new",
+      "rename_after_first_response": true,
+      "messages": [
+        {
+          "index": 1,
+          "source_text": "在最近一次结果之前，我妈李敏上一条糖化血红蛋白记录是什么？请带上日期和单位。",
+          "send_text": "在最近一次结果之前，我妈李敏上一条糖化血红蛋白记录是什么？请带上日期和单位。",
+          "explicit_memory_instruction": false
+        }
+      ],
+      "between_message_wait_seconds": null,
+      "waits_after": [
+        "short",
+        "short"
+      ],
+      "transition_actions": [
+        {
+          "action": "wait",
+          "profile": "short"
+        },
+        {
+          "action": "navigate_next_target"
+        },
+        {
+          "action": "wait",
+          "profile": "short"
+        }
+      ],
+      "t17_anchor": false,
+      "execution": "automatic"
+    },
+    {
+      "id": "S25",
+      "name": "E014 用药更新",
+      "kind": "更新",
+      "location": "返回 M02",
+      "target": "M02",
+      "navigation": "return",
+      "rename_after_first_response": false,
+      "messages": [
+        {
+          "index": 1,
+          "source_text": "我爸陈建华的用药方案有了正式调整。2026年7月20日，医生把他的苯磺酸氨氯地平片调整为10 mg，每天早晨1次；从这天起，这就是他当前执行的方案。",
+          "send_text": "请记住下面这段内容，并保留其中对人物、时间和信息性质的准确区分：\n\n我爸陈建华的用药方案有了正式调整。2026年7月20日，医生把他的苯磺酸氨氯地平片调整为10 mg，每天早晨1次；从这天起，这就是他当前执行的方案。",
+          "explicit_memory_instruction": true
+        }
+      ],
+      "between_message_wait_seconds": null,
+      "waits_after": [
+        "long"
+      ],
+      "transition_actions": [
+        {
+          "action": "wait",
+          "profile": "long"
+        }
+      ],
+      "t17_anchor": false,
+      "execution": "automatic"
+    },
+    {
+      "id": "S26",
+      "name": "用药更新 U03 当前状态",
+      "kind": "检查",
+      "location": "T15-A 新开",
+      "target": "T15-A",
+      "navigation": "new",
+      "rename_after_first_response": true,
+      "messages": [
+        {
+          "index": 1,
+          "source_text": "我爸陈建华现在服用的降压药是什么？请说清剂量和频率。",
+          "send_text": "我爸陈建华现在服用的降压药是什么？请说清剂量和频率。",
+          "explicit_memory_instruction": false
+        }
+      ],
+      "between_message_wait_seconds": null,
+      "waits_after": [
+        "short"
+      ],
+      "transition_actions": [
+        {
+          "action": "wait",
+          "profile": "short"
+        }
+      ],
+      "t17_anchor": false,
+      "execution": "automatic"
+    },
+    {
+      "id": "S27",
+      "name": "用药更新 U03 历史状态",
+      "kind": "检查",
+      "location": "T15-B 新开",
+      "target": "T15-B",
+      "navigation": "new",
+      "rename_after_first_response": true,
+      "messages": [
+        {
+          "index": 1,
+          "source_text": "在现在这个方案之前，我爸陈建华的上一版降压药方案是什么？",
+          "send_text": "在现在这个方案之前，我爸陈建华的上一版降压药方案是什么？",
+          "explicit_memory_instruction": false
+        }
+      ],
+      "between_message_wait_seconds": null,
+      "waits_after": [
+        "short"
+      ],
+      "transition_actions": [
+        {
+          "action": "wait",
+          "profile": "short"
+        }
+      ],
+      "t17_anchor": false,
+      "execution": "automatic"
+    },
+    {
+      "id": "S28",
+      "name": "主动遗忘 U13 删除前检查",
+      "kind": "检查",
+      "location": "T16-PRE 新开",
+      "target": "T16-PRE",
+      "navigation": "new",
+      "rename_after_first_response": true,
+      "messages": [
+        {
+          "index": 1,
+          "source_text": "我过去有没有发生过已经痊愈的骨折？请说出部位、发生时间和痊愈时间。",
+          "send_text": "我过去有没有发生过已经痊愈的骨折？请说出部位、发生时间和痊愈时间。",
+          "explicit_memory_instruction": false
+        }
+      ],
+      "between_message_wait_seconds": null,
+      "waits_after": [
+        "short"
+      ],
+      "transition_actions": [
+        {
+          "action": "wait",
+          "profile": "short"
+        }
+      ],
+      "t17_anchor": false,
+      "execution": "automatic"
+    },
+    {
+      "id": "S29",
+      "name": "E015 主动遗忘请求",
+      "kind": "删除",
+      "location": "M03 新开",
+      "target": "M03",
+      "navigation": "new",
+      "rename_after_first_response": true,
+      "messages": [
+        {
+          "index": 1,
+          "source_text": "关于我陈宇在2019年8月16日发生左腕骨折、到2019年10月30日已经痊愈且现在没有相关治疗的这段历史，因为我已经完全恢复了，麻烦你不要再记住这件事，以后也不要再提起或使用这条信息。",
+          "send_text": "关于我陈宇在2019年8月16日发生左腕骨折、到2019年10月30日已经痊愈且现在没有相关治疗的这段历史，因为我已经完全恢复了，麻烦你不要再记住这件事，以后也不要再提起或使用这条信息。",
+          "explicit_memory_instruction": false
+        }
+      ],
+      "between_message_wait_seconds": null,
+      "waits_after": [
+        "long"
+      ],
+      "transition_actions": [
+        {
+          "action": "wait",
+          "profile": "long"
+        }
+      ],
+      "t17_anchor": false,
+      "execution": "automatic"
+    },
+    {
+      "id": "S30",
+      "name": "主动遗忘 U13 删除后检查",
+      "kind": "检查",
+      "location": "T16-POST 新开",
+      "target": "T16-POST",
+      "navigation": "new",
+      "rename_after_first_response": true,
+      "messages": [
+        {
+          "index": 1,
+          "source_text": "请列出你目前仍可以调用的、关于我陈宇的个人健康信息。只依据你现有且允许使用的信息回答，不要猜测。",
+          "send_text": "请列出你目前仍可以调用的、关于我陈宇的个人健康信息。只依据你现有且允许使用的信息回答，不要猜测。",
+          "explicit_memory_instruction": false
+        }
+      ],
+      "between_message_wait_seconds": null,
+      "waits_after": [],
+      "transition_actions": [],
+      "t17_anchor": false,
+      "execution": "automatic"
+    },
+    {
+      "id": "S31",
+      "name": "隔日稳定性复测 R01",
+      "kind": "复测",
+      "location": "T17 新开",
+      "target": "T17",
+      "navigation": "new",
+      "rename_after_first_response": true,
+      "messages": [
+        {
+          "index": 1,
+          "source_text": "我爸陈建华最近一次诊室血压记录是什么？请说出测量日期、数值和单位。",
+          "send_text": "我爸陈建华最近一次诊室血压记录是什么？请说出测量日期、数值和单位。",
+          "explicit_memory_instruction": false
+        }
+      ],
+      "between_message_wait_seconds": null,
+      "waits_after": [],
+      "transition_actions": [],
+      "t17_anchor": false,
+      "execution": "manual"
+    }
+  ]
+}

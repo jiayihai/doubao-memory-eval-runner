@@ -1,0 +1,300 @@
+{
+  "version": "1.6.0",
+  "preparedOn": "2026-11-03",
+  "kind": "github-source-showcase",
+  "coreTests": {
+    "passed": 165,
+    "skipped": 8,
+    "failed": 0
+  },
+  "externalRuntimeIncluded": false,
+  "realRunDataIncluded": false,
+  "realMessagesSentDuringPreparation": 0,
+  "files": [
+    {
+      "path": ".gitattributes",
+      "sha256": "edab774c4f80704ed0783c96daa3c0909bed7af233afbc679b3038c208754ec9",
+      "bytes": 117
+    },
+    {
+      "path": ".gitignore",
+      "sha256": "6d804112424f7b3f810f2587a89b7fe9c135c87f3a3d7eab80eebc13d4a0a72a",
+      "bytes": 391
+    },
+    {
+      "path": "adapters/cdp.mjs",
+      "sha256": "de6cd81c2c1bf32d804532245dc0897d99d751980e85a108d695e4cba009a664",
+      "bytes": 3258
+    },
+    {
+      "path": "adapters/doubao-naming.mjs",
+      "sha256": "eab478d2a0d4e41cee5b9c6dd7e4e2f660a1c17f996335f356e7ce1c4859da89",
+      "bytes": 12504
+    },
+    {
+      "path": "adapters/doubao.mjs",
+      "sha256": "57b36e689aad333a8442b4cadfddd3359992c790ef275a360539a93d634368fe",
+      "bytes": 17350
+    },
+    {
+      "path": "core/automatic-results.mjs",
+      "sha256": "bc843d5a8103adf2aa9316b0a056c60a6cabe87a9e6ae95bcbc21396f633a083",
+      "bytes": 5398
+    },
+    {
+      "path": "core/conversation-export.mjs",
+      "sha256": "4cecaae6eadc089749fe3a1298155e24726c1c394e83cf730cead6657bc35049",
+      "bytes": 8387
+    },
+    {
+      "path": "core/dataset-preview.mjs",
+      "sha256": "5bad2773cc46cdb5fd5880de774ae4fe9a90eae62db17a5e9f6d26232e7917f9",
+      "bytes": 14490
+    },
+    {
+      "path": "core/engine.mjs",
+      "sha256": "3c30e681b49b0a6c682d1e1ecde6c3aef21319ee93cb59c4ea1e243ca812a9eb",
+      "bytes": 29680
+    },
+    {
+      "path": "core/excel-dataset.mjs",
+      "sha256": "9b1017b08a6289f7b6e3247e6ed14bb0c9658a3b2d36f910ea3f0fc69eb5590c",
+      "bytes": 3303
+    },
+    {
+      "path": "core/excel-engine.mjs",
+      "sha256": "afe8c1f1633e280e6e874b18608942644ad8035158a4d68c38b462e0c9af899a",
+      "bytes": 3820
+    },
+    {
+      "path": "core/excel-output.mjs",
+      "sha256": "18551d2285257e3d3054321828df44d6558ee56c674232c8bb6e3e3735bdf343",
+      "bytes": 7279
+    },
+    {
+      "path": "core/excel-results.mjs",
+      "sha256": "c756262a5578c645b4e67e373590081daa0a5047f2e77b7d08878d86e2f5d89b",
+      "bytes": 12482
+    },
+    {
+      "path": "core/manual-results.mjs",
+      "sha256": "58ed5548b63b5f6e4a823c3440c9dd06b9013769585b0f45026fa22a0b9ae0e5",
+      "bytes": 7771
+    },
+    {
+      "path": "core/naming.mjs",
+      "sha256": "95aed921853da96b61f81221c08bb7b1dc83afff761f87373cdbe477176f0a59",
+      "bytes": 1333
+    },
+    {
+      "path": "core/observation.mjs",
+      "sha256": "85d0fc639e2b27b112234f9cec53c71e793320028f2fba90e88a2fbfb30b9c7b",
+      "bytes": 3766
+    },
+    {
+      "path": "core/policy.mjs",
+      "sha256": "8b8136811e760e081021d13a7d3c9d77b18a5c9eaae08bc7da57fc67b58004c9",
+      "bytes": 607
+    },
+    {
+      "path": "core/reply-archive.mjs",
+      "sha256": "f335fcdaae5da06a6312388a12e5be4190d951236cdf8a11caa8dca6f640ee07",
+      "bytes": 7976
+    },
+    {
+      "path": "core/store.mjs",
+      "sha256": "72bef634a5899d8d674cb54c06b9dab4c430e9fe3d03ed812df69afae8567772",
+      "bytes": 6106
+    },
+    {
+      "path": "datasets/doubao-b.json",
+      "sha256": "635b0fd1f82f86e333e7263df1b4464b48614a3a60619dca3d2091be1e1629ba",
+      "bytes": 40700
+    },
+    {
+      "path": "datasets/index.mjs",
+      "sha256": "b4ffd5db71da8472633e99c6baa77573708aa8bfb3fa3ab3f6284add42f81b53",
+      "bytes": 5176
+    },
+    {
+      "path": "datasets/原执行稿.md",
+      "sha256": "1602a11ad8394a95ee2c70a6cd30abe906dd11808fef3ad00ef8467b92eae082",
+      "bytes": 61976
+    },
+    {
+      "path": "docs/dataset-format.md",
+      "sha256": "33e3e7dbf0908d2c0322a31254b3aaa47e62976dc378d97145026e0eefe0ab52",
+      "bytes": 2245
+    },
+    {
+      "path": "docs/dependencies.md",
+      "sha256": "6bfe19007a18a0e8717e4977e894326e8bbd628524a4c9823c69a22579704e25",
+      "bytes": 2085
+    },
+    {
+      "path": "docs/design.md",
+      "sha256": "63571b31888de353a215a01b06edf9a466f2f6a13254b2417e7695a409a06109",
+      "bytes": 2389
+    },
+    {
+      "path": "docs/github-upload.md",
+      "sha256": "99ad8a68c7d2ab95fd4d25c9d3b36e4a05918e02aa4a9f5032271b5900159fee",
+      "bytes": 1169
+    },
+    {
+      "path": "docs/release-notes.md",
+      "sha256": "c6d7367e93a34f84835b943b48540ef323820bf6955eaa1e05b1b6b6e1f29b5d",
+      "bytes": 1127
+    },
+    {
+      "path": "docs/validation.md",
+      "sha256": "fd04bedce71f2a7618c2f5e398932615e64888782ac54cbeae33c70258507f19",
+      "bytes": 2507
+    },
+    {
+      "path": "examples/README.md",
+      "sha256": "839bd4693b293d26a9ea1596c51f3406420a7f009fa7a4dd6ba09726d52ebd81",
+      "bytes": 980
+    },
+    {
+      "path": "examples/short-flow.preview.json",
+      "sha256": "cd9786422d27bf51d66163659c66ea1bebf1dc01c7d2a8a3cb42f4073003bf90",
+      "bytes": 4366
+    },
+    {
+      "path": "examples/short-flow.xlsx",
+      "sha256": "f54eb04d6b2c4d73b3d508df432c043628b10dada17c76927deebbbc1b65895e",
+      "bytes": 8146
+    },
+    {
+      "path": "NOTICE.md",
+      "sha256": "07d43152f910bb4a669c45d53385488b6c739d37436ae58b5fa6c5da414459ac",
+      "bytes": 1064
+    },
+    {
+      "path": "package.json",
+      "sha256": "8a63733d5b4fc99e89f942223acaa39cbc19f845a77ce0576e12779d8c088a1a",
+      "bytes": 401
+    },
+    {
+      "path": "README.md",
+      "sha256": "a91c6724a8515a668c1a790d84bc0269c93d79a08ba159677e12826481c38c7a",
+      "bytes": 4358
+    },
+    {
+      "path": "server.mjs",
+      "sha256": "d0a69a9808e68e06b388590e5eb832e2ebe1b4848bda44ed103b2ec894b16364",
+      "bytes": 27750
+    },
+    {
+      "path": "tests/automatic-results.test.mjs",
+      "sha256": "e9416189fee11de53640ea390446f6b0d50fab983b0c17fde8cdd65d28fee56d",
+      "bytes": 4831
+    },
+    {
+      "path": "tests/conversation-export.test.mjs",
+      "sha256": "20ea2825582d7c7d89c88be6e8a4cf390424204b41786a5873f8aa95ee2b8aee",
+      "bytes": 9725
+    },
+    {
+      "path": "tests/dataset-preview.test.mjs",
+      "sha256": "1ec067b6011dc1ba2303a99880e10d91f083aa26d247f747f447d9f90d7d3795",
+      "bytes": 13569
+    },
+    {
+      "path": "tests/engine.test.mjs",
+      "sha256": "db8ad04756b2e1dac2045481bd6b4daccb9896393d5f63c2a2afc3b2d8f2c8ab",
+      "bytes": 41645
+    },
+    {
+      "path": "tests/excel-execution.test.mjs",
+      "sha256": "3abeeb8d7fbac61342db0462bccbbc84d67a7b602abecbedc0b7fa591faf54fc",
+      "bytes": 16563
+    },
+    {
+      "path": "tests/excel-results.test.mjs",
+      "sha256": "00f417688f1a7c775516c4a49b1c592decd46a31c2e248ef4af4053ceeca4112",
+      "bytes": 19489
+    },
+    {
+      "path": "tests/history-navigation.test.mjs",
+      "sha256": "4bd4ddbf6841bd38ff73a0f4e30133376ba45eeef7aade2d7dffd23a548b097c",
+      "bytes": 4949
+    },
+    {
+      "path": "tests/naming.test.mjs",
+      "sha256": "1d3bf70b883f7ad6a9a2af40e7b47b4c8893e47d9b3ae7e770ac32a3b1751dc1",
+      "bytes": 12812
+    },
+    {
+      "path": "tests/observation.test.mjs",
+      "sha256": "3548d7b2e7ef924132932a9094040e12385bf086805745a130f9aaf23408d461",
+      "bytes": 7393
+    },
+    {
+      "path": "tests/ProgressBarCheck.cs",
+      "sha256": "11fb9d208665f336c3ec6649a327f2cfd4b5db4cd28e236ebbfd6839c9c93d92",
+      "bytes": 12798
+    },
+    {
+      "path": "tests/reply-archive.test.mjs",
+      "sha256": "dd6ef696b4455fe96fef0f250b03063023d0aaeca025b8b0ae0e0a860ccf05f9",
+      "bytes": 6195
+    },
+    {
+      "path": "tests/system.test.mjs",
+      "sha256": "1d2b2979e085a0b1d99d87097754b879c88b60e7def898ec307a4dd286863a40",
+      "bytes": 6481
+    },
+    {
+      "path": "tools/run-tests.mjs",
+      "sha256": "09612960d72ea0b4a1d700f1fbc87df66f4b7ea749d47b4254ce2fd616b13daf",
+      "bytes": 797
+    },
+    {
+      "path": "tools/spreadsheets/backfill-worker.mjs",
+      "sha256": "88560619682352a67e9345f49ca295733df9dd832a6f9684b5f5ffa945331ce4",
+      "bytes": 9666
+    },
+    {
+      "path": "tools/spreadsheets/excel-results-worker.mjs",
+      "sha256": "8ccbaedef13736c770ede525fa57179cc6f3d0585c787f6d5553407da9dadc2d",
+      "bytes": 8042
+    },
+    {
+      "path": "tools/spreadsheets/preview-worker.mjs",
+      "sha256": "82b33f391d63ad18c3f092fb11b6b878b7bbfafa95eb1cdf36154fcbf5bf2c1d",
+      "bytes": 2088
+    },
+    {
+      "path": "ui/App.config",
+      "sha256": "42ef4e813c1850e831cf32a9876072d1ee4e77023472d262533808f3fc6b5cfb",
+      "bytes": 357
+    },
+    {
+      "path": "ui/DatasetPreviewWindow.cs",
+      "sha256": "f4acbc1b4726e05a46faeed9bf576a90eccaad7f8ff99b5590cfbdc2d7607dde",
+      "bytes": 12971
+    },
+    {
+      "path": "ui/ManualStepWindow.cs",
+      "sha256": "388103ea2eb355634123d8fe860680b60de74dcf29cba806901bf42f3630605b",
+      "bytes": 8512
+    },
+    {
+      "path": "ui/RunnerWindow.cs",
+      "sha256": "e98b6fd53284a188b69f2c580b8bd9e9880828ad66ba3a3f2d12f0f9144fff7e",
+      "bytes": 33234
+    },
+    {
+      "path": "执行设置.json",
+      "sha256": "7d9e3558c23bf66a4e951558a7b693da878c99c212ba31ed13e5721453d68b0b",
+      "bytes": 78
+    },
+    {
+      "path": "构建窗口.ps1",
+      "sha256": "1712c0ffbfa80fce7defb4eccbe61e6ae519124ba3b825779177e8ef44fde2e7",
+      "bytes": 1154
+    }
+  ]
+}
