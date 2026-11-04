@@ -1,5 +1,4 @@
 import test from 'node:test';
-const xlsxIntegration=process.env.DOUBAO_XLSX_TESTS==='1';
 import assert from 'node:assert/strict';
 import { mkdtempSync, mkdirSync, writeFileSync, readFileSync, rmSync, copyFileSync, existsSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -134,7 +133,7 @@ test('子进程错误清楚返回；不包含发送器调用', async t=>{
   writeFileSync(worker,"process.stdin.resume();process.stdin.on('end',()=>{console.log(JSON.stringify({ok:false,error:'测试写入错误'}));process.exitCode=1;});");
   await assert.rejects(runResultWorker(f.collect(),{worker}),/测试写入错误/);
 });
-test('真实表格子进程复制固定模板并回填，源模板和执行记录不变',{skip:!xlsxIntegration},async t=>{
+test('真实表格子进程复制固定模板并回填，源模板和执行记录不变', async t=>{
   const approvedTemplate=templatePath(fileURLToPath(new URL('..',import.meta.url)));
   if(!existsSync(approvedTemplate))return t.skip('此离线整合需要本阶段指定的固定模板');
   const f=fixture(t,54);copyFileSync(approvedTemplate,templatePath(f.root));
@@ -212,7 +211,7 @@ test('关闭窗口会等待本地自动生成收尾，不重启发送',async t=>
   const close=controller.shutdown().then(()=>{closed=true;});await Promise.resolve();assert.equal(closed,false);
   release({file:'end.xlsx',savedReplies:54});await job;await close;assert.equal(closed,true);assert.equal(f.state.status,'awaiting_manual');
 });
-test('真实发送引擎经过末段到T17后自动生成Excel，无需新的豆包操作',{skip:!xlsxIntegration},async t=>{
+test('真实发送引擎经过末段到T17后自动生成Excel，无需新的豆包操作',async t=>{
   const approvedTemplate=templatePath(fileURLToPath(new URL('..',import.meta.url)));
   if(!existsSync(approvedTemplate))return t.skip('需要本阶段指定的固定模板');
   const f=fixture(t);copyFileSync(approvedTemplate,templatePath(f.root));

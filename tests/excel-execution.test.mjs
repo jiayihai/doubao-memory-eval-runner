@@ -14,14 +14,8 @@ import { Controller } from '../server.mjs';
 
 const project=fileURLToPath(new URL('..',import.meta.url));
 const shortFile=resolve(project,'examples/short-flow.xlsx');
-const xlsxIntegration=process.env.DOUBAO_XLSX_TESTS==='1';
 const cache=new Map();
-const readPreview=file=>{if(!cache.has(file)){
-  if(!xlsxIntegration&&file===shortFile){const fixture=JSON.parse(readFileSync(resolve(project,'examples/short-flow.preview.json'),'utf8'));
-    const bytes=readFileSync(file);assert.equal(hash(bytes),fixture.inputSha256,'样例与纯核心测试夹具不同步');
-    cache.set(file,{...fixture,file:{path:file,name:basename(file),sha256:hash(bytes),size:bytes.length}});
-  }else cache.set(file,inspectDatasetFile(file));
-}return cache.get(file);};
+const readPreview=file=>{if(!cache.has(file))cache.set(file,inspectDatasetFile(file));return cache.get(file);};
 function scratch(t){const base=mkdtempSync(join(tmpdir(),'doubao-excel-run-'));t.after(()=>{const p=resolve(base);assert.ok(p.startsWith(resolve(tmpdir())+sep)&&basename(p).startsWith('doubao-excel-run-'));rmSync(p,{recursive:true});});return base;}
 const snapshot=(href='/chat',ordered=[])=>({url:'chrome://doubao-chat'+href,ordered,sent:ordered.filter(m=>m.role==='user'),received:ordered.filter(m=>m.role==='assistant'),inputText:'',busy:false});
 class Adapter{
@@ -78,8 +72,8 @@ test('人工保存后恢复自动，计入人工处理和不确定时间，不�
   assert.equal(r.state.intervals.at(-1).source,'manual_confirmation');assert.equal(r.state.intervals.at(-1).actualGapMs,2000);
   const input=collectExcelResultInput(r);assert.equal(input.records.length,6);assert.equal(input.records.filter(x=>x.source==='manual_entry').length,1);
 });
-test('同样的读取器直接运行另一个66行文件，无需把它的消息写入脚本',{skip:!xlsxIntegration},async t=>{
-  const file=resolve(project,'examples/optional/long-flow.xlsx');if(!existsSync(file))return t.skip('可选的新表不存在');
+test('同样的读取器直接运行另一个66行文件，无需把它的消息写入脚本',async t=>{
+  const file=resolve(project,'examples/long-flow.xlsx');if(!existsSync(file))return t.skip('可选的新表不存在');
   const r=await setup(t,file);await assert.rejects(r.make().run(),ManualStepRequired);
   assert.equal(r.adapter.sends.length,60);assert.equal(r.state.completions.length,60);assert.equal(r.state.stepIndex,60);
   assert.deepEqual(r.adapter.sends.map(m=>m.text),r.report.steps.filter(s=>s.mode==='AUTO').map(s=>s.content));
@@ -124,23 +118,36 @@ test('双份结果从同一文件复制，复制失败只补存而不再调用�
   assert.deepEqual(readFileSync(file),readFileSync(second.sourceFile));
   writeFileSync(second.sourceFile,'user-edited');const conflict=await publishResultCopy(second,input);assert.equal(conflict.copyStatus,'failed');assert.equal(readFileSync(second.sourceFile,'utf8'),'user-edited');
 });
-test('真实Excel回填按步骤和问题ID，原表与快照保留，两处结果字节一致',{skip:!xlsxIntegration},async t=>{
+test('真实Excel回填按步骤和问题ID，原表与快照保留，两处结果字节一致',async t=>{
   const r=await setup(t);await assert.rejects(r.make().run(),ManualStepRequired);submit(r);await r.make().run();
   const input=collectExcelResultInput(r),before=hash(readFileSync(r.source)),frozen=hash(readFileSync(input.template));
   const result=await generateExcelResults(input);assert.equal(result.savedReplies,6);assert.equal(result.questionsFilled,3);assert.equal(result.copyStatus,'saved');
   assert.equal(hash(readFileSync(result.file)),hash(readFileSync(result.sourceFile)));assert.equal(hash(readFileSync(r.source)),before);assert.equal(hash(readFileSync(input.template)),frozen);
   const report=JSON.parse(readFileSync(result.report,'utf8'));assert.equal(report.rows.length,6);assert.equal(report.manualReplies,1);
 });
-test('通用结果中的人工跳过保留空白和状态，不填写成0分或成功',{skip:!xlsxIntegration},async t=>{
+test('通用结果中的人工跳过保留空白和状态，不填写成0分或成功',async t=>{
   const r=await setup(t);await assert.rejects(r.make().run(),ManualStepRequired);submit(r,{skip:true});await r.make().run();
   const result=await generateExcelResults(collectExcelResultInput(r));assert.equal(result.savedReplies,5);assert.equal(result.processedRows,6);assert.equal(result.skippedRows,1);assert.equal(result.questionsFilled,2);
 });
-test('控制器启动时重新校验已选文件，过期选择不触发连接；成功后绑定快照',{skip:!xlsxIntegration},async t=>{
+test('控制器启动时重新校验已选文件，过期选择不触发连接；成功后绑定快照',async t=>{
   const r=await setup(t),controller=new Controller(r.base);let checks=0;controller.check=async()=>{checks++;return {account:'account-A',draft:false};};controller.execute=()=>{};
   const opts={datasetId:'excel',excelPath:r.source,excelHash:'stale',purpose:'technical_regression',acknowledgeExistingMemory:true};
   await assert.rejects(controller.start(opts),/重新校验/);assert.equal(checks,0);
   await controller.start({...opts,excelHash:r.report.file.sha256});assert.equal(checks,1);assert.equal(controller.state.datasetId,'excel');
   assert.ok(existsSync(join(controller.directory,'输入测评集.xlsx')));assert.equal(controller.status().run.total,6);
+});
+
+test('暂停A后选择B：继续仍恢复A，新建B使用独立快照并保留A进度',async t=>{
+  const r=await setup(t),controller=new Controller(r.base);controller.state=r.state;controller.directory=r.directory;r.state.status='paused';
+  const oldState=readFileSync(join(r.directory,'state.json')),oldSnapshot=hash(readFileSync(join(r.directory,'输入测评集.xlsx'))),oldId=r.state.runId;
+  let executed=[];controller.execute=()=>{executed.push({id:controller.state.runId,path:loadExcelDataset(controller.directory,controller.state).data.source.path,completed:controller.state.completions.length});};
+  await controller.previewDataset({},async()=>({valid:true,file:{path:'B.xlsx'}}));
+  await controller.resume({expectedRunId:oldId});assert.equal(executed[0].path,r.source);assert.equal(controller.state.runId,oldId);
+  const next=join(r.sourceDir,'B.xlsx');copyFileSync(r.source,next);controller.check=async()=>({account:'account-A',draft:false});
+  await controller.start({datasetId:'excel',excelPath:next,excelHash:r.report.file.sha256,purpose:'technical_regression',acknowledgeExistingMemory:true,abandon:true,expectedPreviousRunId:oldId});
+  assert.notEqual(controller.state.runId,oldId);assert.equal(executed[1].path,next);assert.equal(executed[1].completed,0);
+  assert.deepEqual(readFileSync(join(r.directory,'state.json')),oldState);assert.equal(hash(readFileSync(join(r.directory,'输入测评集.xlsx'))),oldSnapshot);
+  await assert.rejects(controller.resume({expectedRunId:oldId}),/其他轮次/);
 });
 test('预览同时告知通用执行能力，不支持的自动多身份不能用于本轮执行',async t=>{
   const r=await setup(t),controller=new Controller(r.base),report=structuredClone(r.report);report.steps[1].identityId='B';
@@ -154,8 +161,8 @@ test('自动结束和人工结束各生成对应快照，结果错误不改变�
   await controller.finishAutomaticResults(fake);assert.equal(outputs,0);submit(r);await r.make().run();await controller.finishAutomaticResults(fake);
   assert.equal(outputs,1);assert.equal(controller.automaticResults.record.status,'succeeded');assert.equal(r.state.completions.length,5);assert.equal(r.state.status,'completed');
 });
-test('66行原表通用回填自动部分和人工收尾，两次结果双份一致且原表不改',{skip:!xlsxIntegration},async t=>{
-  const file=resolve(project,'examples/optional/long-flow.xlsx');if(!existsSync(file))return t.skip('可选新表不存在');
+test('66行原表通用回填自动部分和人工收尾，两次结果双份一致且原表不改',async t=>{
+  const file=resolve(project,'examples/long-flow.xlsx');if(!existsSync(file))return t.skip('可选新表不存在');
   const r=await setup(t,file),before=hash(readFileSync(r.source));await assert.rejects(r.make().run(),ManualStepRequired);
   const first=await generateExcelResults(collectExcelResultInput(r));assert.equal(first.savedReplies,60);assert.equal(first.questionsFilled,22);assert.equal(first.unexecutedRows,6);
   assert.equal(hash(readFileSync(first.file)),hash(readFileSync(first.sourceFile)));

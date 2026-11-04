@@ -2,8 +2,8 @@
   "schema_version": 1,
   "experiment": "豆包B组：普通对话模式＋逐条显式记忆指令",
   "generated_at": "2026-09-19T05:45:38.114Z",
-  "source_file": "原执行稿.md",
-  "source_sha256": "1602a11ad8394a95ee2c70a6cd30abe906dd11808fef3ad00ef8467b92eae082",
+  "source_file": "..\\评测集构建\\13_完整测评执行稿V1.0.md",
+  "source_sha256": "a545e90b5ebba578712f68ec90fac49b0e9203e062aee49184d3b3c593bd7faf",
   "cleanup_recorded_at_beijing": "2026-09-19 13:16:47 +08:00",
   "wait_profiles_seconds": {
     "message_gap": [

@@ -18,6 +18,7 @@ import { compileExcelDataset,freezeExcelDataset } from './core/excel-dataset.mjs
 import { ExcelEngine } from './core/excel-engine.mjs';
 import { excelArchive,collectExcelResultInput,generateExcelResults,runExcelResultWorker } from './core/excel-output.mjs';
 import { manualStepDetails,commitManualResult } from './core/manual-results.mjs';
+import { readRunArtifacts, recordRunResult } from './core/run-artifacts.mjs';
 import { saveJSON, loadJSON, lockDirectory, findSent, ReviewRequired, Interrupted } from './core/store.mjs';
 
 export const ROOT = dirname(fileURLToPath(import.meta.url));
@@ -33,7 +34,8 @@ export class Controller {
     if (this.settings.lastRun && /^[\w-]+$/.test(this.settings.lastRun)) {
       this.directory = resolve(this.dataDir, this.settings.lastRun);
       this.state = loadJSON(resolve(this.directory, 'state.json'));
-      if (this.state && this.state.phase !== 'finished' && !['paused', 'stopped', 'needs_review', 'error'].includes(this.state.status)) {
+      const awaitingHuman = this.state?.datasetId === 'excel' && this.state.phase === 'manual' && this.state.status === 'awaiting_manual';
+      if (this.state && this.state.phase !== 'finished' && !awaitingHuman && !['paused', 'stopped', 'needs_review', 'error'].includes(this.state.status)) {
         this.state.status = 'paused'; this.state.activity = '上次运行中断，点击继续可核对并恢复';
         if (this.state.pending) { this.state.pending.candidate = null; this.state.pending.recovered = true; }
         this.save();
@@ -64,14 +66,17 @@ export class Controller {
     const renameJobs = Object.values(s?.renameJobs || {});
     const archived = s?.completions.filter(x=>x.replyArchive?.status==='saved') || [];
     const manual=Object.values(s?.manualResults||{});
-    return { version: '1.6.0', active: this.active, busy: this.busy || !!this.automaticResults?.running || !!this.previewTask, connection: this.connection, settings: this.settings,
+    return { version: '1.8.0', active: this.active, busy: this.busy || !!this.automaticResults?.running || !!this.previewTask || !!this.resultTask, connection: this.connection, settings: this.settings,
       logs: this.logs, directory: this.directory || this.dataDir,
+      artifacts: readRunArtifacts({ directory:this.directory, state:s, dataset:data, automaticRecord:this.automaticResults?.record }),
       resultGeneration: { active: !!this.resultTask || !!this.automaticResults?.running, template: templatePath(this.root),
         automaticEnabled: automaticResultsEnabled(s), automatic: this.automaticResults?.record || null,
         available: ['doubao-b','excel'].includes(s?.datasetId) && !!s.features?.captureReplies && archived.length+manual.length > 0 },
       run: s && { id: s.runId, datasetId: s.datasetId, purpose: s.purpose || (s.datasetId === 'smoke' ? 'connectivity_test' : 'formal_evaluation'), account: s.account, status: s.status, activity: resultActivity(s, this.automaticResults?.record),
         step: step?.id || '完成', stepName: step?.name || '', target: step?.target || '',
         completed: s.completions.length+manual.length, automaticCompleted:s.completions.length,manualCompleted:manual.length,
+        automaticTotal:data.automaticTotal ?? data.total, manualTotal:data.manualTotal ?? data.data.steps.filter(x=>x.execution==='manual').reduce((n,x)=>n+x.messages.length,0),
+        phase:s.phase, pauseRequested:!!this.requested,
         inputName:data.data.kind==='excel'?data.data.source.name:null,
         inputPath:data.data.kind==='excel'?data.data.source.path:null,inputHash:data.data.kind==='excel'?data.data.source.sha256:null,
         manualSkipped:manual.filter(r=>r.status==='跳过').length,
@@ -131,6 +136,7 @@ export class Controller {
     if (this.active) throw new Error('已经在执行，不能重复开始');
     if (this.resultTask || this.automaticResults?.running) throw new Error('结果表正在生成，请完成后再开始新一轮');
     if (this.previewTask) throw new Error('测评集正在校验，请完成后再开始新一轮');
+    if (options.expectedPreviousRunId && options.expectedPreviousRunId !== this.state?.runId) throw new Error('当前任务已变化，请刷新后再新建');
     if (this.state && this.state.phase !== 'finished' && !options.abandon) throw new Error('有未完成任务，请继续原任务，或确认放弃旧进度后新建');
     if (!['smoke', 'doubao-b','excel'].includes(options.datasetId)) throw new Error('请选择支持的流程或Excel测评集');
     const preview=options.datasetId==='excel'?await previewDatasetFile(options.excelPath):null;
@@ -186,15 +192,18 @@ export class Controller {
       await this.finishAutomaticResults();
     })();
   }
-  async resume() {
+  async resume(options={}) {
     if (this.active) throw new Error('任务正在运行');
+    if (this.resultTask || this.automaticResults?.running || this.previewTask) throw new Error('文件操作尚未完成，请稍后继续');
     if (!this.state || this.state.phase === 'finished') throw new Error('没有可继续的任务');
+    if (options.expectedRunId && options.expectedRunId !== this.state.runId) throw new Error('当前任务已变化，请刷新后继续，不能恢复其他轮次');
     // Reconnection is handled by the engine; no preliminary navigation may overwrite
     // the pending message's page or cause a second new conversation.
     this.event('resumed', '继续原任务，先核对会话与上一条消息'); this.execute();
   }
-  interrupt(mode) {
+  interrupt(mode, options={}) {
     if (!this.active) return;
+    if (options.expectedRunId && options.expectedRunId !== this.state?.runId) throw new Error('当前任务已变化，不能暂停其他轮次');
     this.requested = mode; this.state.activity = mode === 'stopped' ? '正在停止并保存进度…' : '正在暂停并保存进度…';
   }
   async retryNotSent() {
@@ -295,7 +304,8 @@ export class Controller {
     const input = isExcel?collectExcelResultInput({directory:this.directory,state:this.state}):collectResultInput({ root:this.root, directory:this.directory, state:this.state });
     this.resultTask = Promise.resolve().then(() => isExcel?generateExcelResults(input,worker===runResultWorker?runExcelResultWorker:worker):worker(input));
     try {
-      const result = await this.resultTask;
+      const generated = await this.resultTask;
+      const result = recordRunResult({directory:this.directory,state:this.state,result:generated});
       if (!automatic && automaticResultsEnabled(this.state) && this.state.phase === 'finished'
         && (isExcel?input.records.length===input.run.totalRows:input.turns.length===input.run.totalAutomatic)) this.automaticResults?.recoveredManually(result);
       return result;
@@ -323,7 +333,7 @@ export async function serve({ port = 0, token = process.env.DOUBAO_RUNNER_TOKEN,
       request.setEncoding('utf8');
       for await (const chunk of request) { text += chunk; if (text.length > (request.url==='/manual-submit'?250000:16000)) throw new Error('请求内容过长'); }
       const data = text ? JSON.parse(text) : {};
-      if (request.url === '/pause') { controller.interrupt('paused'); return reply(200, { ok: true }); }
+      if (request.url === '/pause') { controller.interrupt('paused', data); return reply(200, { ok: true }); }
       if (request.url === '/stop') { controller.interrupt('stopped'); return reply(200, { ok: true }); }
       if (request.url === '/shutdown') {
         await controller.shutdown(); reply(200, { ok: true }); server.close(); return;
@@ -335,7 +345,7 @@ export async function serve({ port = 0, token = process.env.DOUBAO_RUNNER_TOKEN,
         if (request.url === '/check') result = await controller.check(data);
         else if (request.url === '/launch') result = await controller.launch(data);
         else if (request.url === '/start') await controller.start(data);
-        else if (request.url === '/resume') await controller.resume();
+        else if (request.url === '/resume') await controller.resume(data);
         else if (request.url === '/retry-not-sent') await controller.retryNotSent();
         else if (request.url === '/export-current') result = await controller.exportLoaded(data);
         else if (request.url === '/generate-results') result = await controller.generateResults();
@@ -361,6 +371,6 @@ export async function serve({ port = 0, token = process.env.DOUBAO_RUNNER_TOKEN,
   return { server, controller, port: server.address().port };
 }
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
-  serve().then(({ port }) => process.stdout.write(JSON.stringify({ port, version: '1.6.0' }) + '\n'))
+  serve().then(({ port }) => process.stdout.write(JSON.stringify({ port, version: '1.8.0' }) + '\n'))
     .catch(error => { process.stderr.write(error.message + '\n'); process.exitCode = 1; });
 }

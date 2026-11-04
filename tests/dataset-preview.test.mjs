@@ -1,5 +1,4 @@
 import test from 'node:test';
-const xlsxIntegration=process.env.DOUBAO_XLSX_TESTS==='1';
 import assert from 'node:assert/strict';
 import { mkdtempSync, mkdirSync, readFileSync, writeFileSync, rmSync, existsSync } from 'node:fs';
 import { resolve, join, sep, basename } from 'node:path';
@@ -101,7 +100,7 @@ test('相同格式支持1000条历史，不写死旧版55条或固定会话数',
   for(let i=1;i<=1000;i++){const row=new Array(headers.length).fill(null);const put=(h,v)=>{row[headers.indexOf(h)]=v;};put('步骤ID','S'+String(i).padStart(4,'0'));put('身份ID','A');put('会话ID','M00');put('消息类型','HISTORY');put('发送内容','历史 '+i);put('回复后等待秒数',30);put('执行方式','AUTO');put('执行状态','未执行');f.sheets[FLOW_SHEET].values.push(row);}
   const r=f.validate();assert.equal(r.valid,true);assert.equal(r.summary.total,1000);assert.equal(r.summary.questions,0);assert.equal(r.steps[999].navigation,'continue');
 });
-test('真实固定Excel只读预览得到55/54/1及21个问题，发送原文逐条一致',{skip:!xlsxIntegration},async t=>{
+test('真实固定Excel只读预览得到55/54/1及21个问题，发送原文逐条一致',async t=>{
   const file=templatePath(fileURLToPath(new URL('..',import.meta.url)));if(!existsSync(file))return t.skip('需要指定的固定模板');
   const before=hash(readFileSync(file)),r=await previewDatasetFile(file),expected=loadDataset().data.steps.flatMap(s=>s.messages.map(m=>m.send_text));
   assert.equal(r.valid,true);assert.equal(r.summary.total,55);assert.equal(r.summary.automatic,54);assert.equal(r.summary.manual,1);

@@ -25,56 +25,51 @@ internal static class ProgressBarCheck {
                 }
             }
         }
-        foreach (float scale in new float[] { 1F, 1.25F, 1.5F }) {
+        foreach (float scale in new float[] { 1F, 1.25F, 1.5F, 1.75F, 2F }) {
             using (var window = new RunnerWindow()) {
                 // Never Show(): no backend, browser, account or network is started.
-                window.Scale(new SizeF(scale, scale));
+                window.Scale(new SizeF(scale, scale)); CreateHandles(window);
                 typeof(RunnerWindow).GetField("ready", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(window, true);
-                typeof(RunnerWindow).GetField("canGenerateResults", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(window, true);
+                CheckWorkflow(window);
                 var setButtons = typeof(RunnerWindow).GetMethod("SetButtons", BindingFlags.Instance | BindingFlags.NonPublic);
-                var resultButtonForState = (Button)typeof(RunnerWindow).GetField("generateExcel", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(window);
-                var pauseButtonForState = (Button)typeof(RunnerWindow).GetField("pause", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(window);
-                var manualButtonForState = (Button)typeof(RunnerWindow).GetField("manualSteps", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(window);
-                typeof(RunnerWindow).GetField("canHandleManual", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(window, true);
-                setButtons.Invoke(window, new object[] { true, false, false });
-                if (!manualButtonForState.Enabled) throw new Exception("Available manual step cannot be opened");
+                var resultButton = Field<Button>(window, "generateExcel"); var control = Field<Button>(window, "runControl");
+                typeof(RunnerWindow).GetField("canGenerateResults", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(window, true);
                 setButtons.Invoke(window, new object[] { false, true, false });
-                if (!resultButtonForState.Enabled || !pauseButtonForState.Enabled) throw new Exception("Cannot generate a snapshot or pause during sending");
+                if (!resultButton.Enabled || !control.Enabled || control.Text != "暂停") throw new Exception("Snapshot and pause unavailable during sending");
                 typeof(RunnerWindow).GetField("generatingResults", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(window, true);
                 setButtons.Invoke(window, new object[] { false, true, false });
-                if (resultButtonForState.Enabled || !pauseButtonForState.Enabled) throw new Exception("Generation must prevent duplicate export but still allow pause");
+                if (resultButton.Enabled || !control.Enabled) throw new Exception("Duplicate generation must be blocked while pause remains available");
                 typeof(RunnerWindow).GetField("generatingResults", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(window, false);
-                var field = typeof(RunnerWindow).GetField("progress", BindingFlags.Instance | BindingFlags.NonPublic);
-                var bar = (CompletionBar)field.GetValue(window);
+                Apply(window, Model(false, false, false));
+                var bar = Field<CompletionBar>(window, "progress");
                 foreach (int width in new int[] { 930, 980, 1360 }) {
-                    window.ClientSize = new Size((int)(width * scale), (int)(760 * scale));
-                    Layout(window);
-                    var exportField = typeof(RunnerWindow).GetField("exportCurrent", BindingFlags.Instance | BindingFlags.NonPublic);
-                    var exportButton = (Button)exportField.GetValue(window);
-                    if (exportButton.Right > exportButton.Parent.ClientSize.Width || exportButton.Bottom > exportButton.Parent.ClientSize.Height)
-                        throw new Exception("Export button is clipped: " + scale + ", " + width);
-                    var resultField = typeof(RunnerWindow).GetField("generateExcel", BindingFlags.Instance | BindingFlags.NonPublic);
-                    var resultButton = (Button)resultField.GetValue(window);
-                    if (resultButton.Left < 0 || resultButton.Right > resultButton.Parent.ClientSize.Width || resultButton.Bottom > resultButton.Parent.ClientSize.Height)
-                        throw new Exception("Result button is clipped: " + scale + ", " + width);
-                    var previewField = typeof(RunnerWindow).GetField("previewDataset", BindingFlags.Instance | BindingFlags.NonPublic);
-                    var previewButton = (Button)previewField.GetValue(window);
-                    if (previewButton.Left < 0 || previewButton.Right > previewButton.Parent.ClientSize.Width || previewButton.Bottom > previewButton.Parent.ClientSize.Height)
-                        throw new Exception("Dataset preview button is clipped: " + scale + ", " + width);
-                    if (bar.Left < bar.Parent.Padding.Left || bar.Right > bar.Parent.ClientSize.Width - bar.Parent.Padding.Right)
-                        throw new Exception("Progress extends beyond visible parent: " + scale + ", " + width);
+                    window.ClientSize = new Size((int)(width * scale), (int)(840 * scale)); Layout(window);
+                    var clean = Field<CheckBox>(window, "clean"); var start = Field<Button>(window, "start");
+                    if (clean.Bottom > clean.Parent.ClientSize.Height - clean.Parent.Padding.Bottom || clean.Height < clean.PreferredSize.Height)
+                        throw new Exception("Initial-state checkbox is clipped: scale=" + scale + ", width=" + width);
+                    if (clean.PointToScreen(new Point(0, clean.Height)).Y > start.PointToScreen(Point.Empty).Y)
+                        throw new Exception("Initial-state checkbox overlaps action row");
+                    foreach (string name in new string[] { "start", "runControl", "exportCurrent", "generateExcel", "previewDataset", "openResult", "openBackups", "openFolder" }) {
+                        var button = Field<Button>(window, name);
+                        if (button.Left < 0 || button.Top < 0 || button.Right > button.Parent.ClientSize.Width || button.Bottom > button.Parent.ClientSize.Height)
+                            throw new Exception("Button clipped: " + name + ", scale=" + scale + ", width=" + width);
+                    }
+                    if (bar.Left < bar.Parent.Padding.Left || bar.Right > bar.Parent.ClientSize.Width - bar.Parent.Padding.Right) throw new Exception("Progress extends beyond parent");
                     bar.SetProgress(35, 54);
                     using (var bitmap = new Bitmap(bar.Width, bar.Height)) {
-                        bar.DrawToBitmap(bitmap, bar.ClientRectangle);
-                        int painted = 0;
+                        bar.DrawToBitmap(bitmap, bar.ClientRectangle); int painted = 0;
                         for (int x = 0; x < bar.Width; x++) if (bitmap.GetPixel(x, bar.Height / 2).ToArgb() == Color.FromArgb(39, 96, 205).ToArgb()) painted++;
-                        int expected = (int)Math.Floor(bar.Width * 35.0 / 54);
-                        if (painted != expected) throw new Exception("Window progress mismatch: " + painted + " vs " + expected);
+                        if (painted != (int)Math.Floor(bar.Width * 35.0 / 54)) throw new Exception("Window progress ratio mismatch");
                     }
                 }
-                Console.WriteLine("Window layout and 35/54 pixels OK, scale=" + scale);
+                string previewPath = Environment.GetEnvironmentVariable("DOUBAO_UI_PREVIEW");
+                if (scale == 1F && !String.IsNullOrEmpty(previewPath)) {
+                    window.ClientSize = new Size(980, 840); Apply(window, Model(false, false, true)); Layout(window);
+                    using (var bitmap = new Bitmap(window.Width, window.Height)) { window.DrawToBitmap(bitmap, new Rectangle(Point.Empty, bitmap.Size)); bitmap.Save(previewPath); }
+                }
+                Console.WriteLine("Window workflow, result context and layout OK, scale=" + scale);
             }
-            using (var preview = new DatasetPreviewWindow(System.IO.Path.Combine(System.IO.Path.GetTempPath(), "preview-test.xlsx"), path => { throw new Exception("Preview check must not read a workbook"); })) {
+            using (var preview = new DatasetPreviewWindow(@"D:\test.xlsx", path => { throw new Exception("Preview check must not read a workbook"); })) {
                 preview.Scale(new SizeF(scale, scale));
                 CreateHandles(preview);
                 var apply = typeof(DatasetPreviewWindow).GetMethod("ApplyReport", BindingFlags.Instance | BindingFlags.NonPublic);
@@ -125,6 +120,50 @@ internal static class ProgressBarCheck {
                 Console.WriteLine("Manual step confirmation, reply and layout OK, scale=" + scale);
             }
         }
+    }
+    static T Field<T>(object instance, string name) { return (T)instance.GetType().GetField(name, BindingFlags.Instance | BindingFlags.NonPublic).GetValue(instance); }
+    static object Call(object instance, string method, params object[] args) { return instance.GetType().GetMethod(method, BindingFlags.Instance | BindingFlags.NonPublic).Invoke(instance, args); }
+    static void Apply(RunnerWindow window, Dictionary<string, object> snapshot) { Call(window, "ApplyView", snapshot); }
+    static Dictionary<string, object> Model(bool running, bool manual, bool result) {
+        var run = new Dictionary<string, object> { { "id", "run-A" }, { "datasetId", "excel" }, { "purpose", "technical_regression" },
+            { "inputName", "A.xlsx" }, { "inputPath", System.IO.Path.Combine(System.IO.Path.GetTempPath(), "A.xlsx") }, { "inputHash", "hash-A" },
+            { "resumable", true }, { "status", manual ? "awaiting_manual" : running ? "running" : "paused" }, { "pauseRequested", false },
+            { "manualAvailable", manual }, { "automaticCompleted", 4 }, { "automaticTotal", 5 }, { "manualCompleted", 0 }, { "manualTotal", 1 },
+            { "total", 6 }, { "completed", 4 }, { "step", "S0005" }, { "target", "A::H01" }, { "activity", "本轮测试状态" }, { "canReviewRetry", false } };
+        var output = new Dictionary<string, object> { { "available", true }, { "file", System.IO.Path.Combine(System.IO.Path.GetTempPath(), "run-A-result.xlsx") },
+            { "kind", "stage" }, { "label", "阶段结果" }, { "processedRows", 4 }, { "totalRows", 6 }, { "stale", false } };
+        var backup = new Dictionary<string, object> { { "path", System.IO.Path.Combine(System.IO.Path.GetTempPath(), "run-A-backups") }, { "label", "身份A · 自动会话备份" } };
+        return new Dictionary<string, object> { { "active", running }, { "busy", false }, { "run", run },
+            { "directory", System.IO.Path.GetTempPath() }, { "connection", new Dictionary<string, object>() },
+            { "resultGeneration", new Dictionary<string, object> { { "available", true } } },
+            { "artifacts", new Dictionary<string, object> { { "result", result ? output : null }, { "backups", result ? new object[] { backup } : new object[0] } } }, { "logs", new object[0] } };
+    }
+    static void CheckWorkflow(RunnerWindow window) {
+        Apply(window, Model(false, false, false));
+        var control = Field<Button>(window, "runControl"); var choose = Field<Button>(window, "previewDataset");
+        if (!control.Enabled || control.Text != "继续本轮" || !choose.Enabled) throw new Exception("Paused task must allow resume and selecting a new file");
+        string next = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "B.xlsx");
+        var report = new Dictionary<string, object> { { "valid", true }, { "file", new Dictionary<string, object> { { "path", next }, { "sha256", "hash-B" } } } };
+        Call(window, "BindExcelSelection", report);
+        var start = (Dictionary<string, object>)Call(window, "BuildStartOptions"); var resume = (Dictionary<string, object>)Call(window, "BuildResumeOptions");
+        if ((string)start["excelPath"] != next || (string)start["expectedPreviousRunId"] != "run-A" || !(bool)start["abandon"]) throw new Exception("New task must bind B and retain the previous run context");
+        if (resume.ContainsKey("excelPath") || resume.Count != 1 || (string)resume["expectedRunId"] != "run-A") throw new Exception("Resume must not send B as the current input");
+        if (!Field<Label>(window, "currentFileLabel").Text.Contains("A.xlsx") || !Field<Label>(window, "nextFileLabel").Text.Contains("B.xlsx")) throw new Exception("Current and next inputs are not distinct");
+        var running = Model(true, false, false); Apply(window, running);
+        if (control.Text != "暂停" || !control.Enabled || choose.Enabled) throw new Exception("Running task controls are inconsistent");
+        ((Dictionary<string, object>)running["run"])["pauseRequested"] = true; Apply(window, running);
+        if (control.Enabled || choose.Enabled || control.Text != "正在暂停…") throw new Exception("Pause request must not permit early file switching");
+        Apply(window, Model(false, false, false)); if (!choose.Enabled || control.Text != "继续本轮" || Field<TextBox>(window, "excelFile").Text != next) throw new Exception("Pause acknowledgement lost the selected B input");
+        Apply(window, Model(false, true, false)); if (control.Text != "处理人工步骤" || !control.Enabled || !Field<Label>(window, "headline").Text.Contains("后续仍有自动")) throw new Exception("Manual action or remaining AUTO state is misleading");
+        Apply(window, Model(false, false, true));
+        if (!Field<Button>(window, "openResult").Enabled || !Field<Button>(window, "openBackups").Enabled) throw new Exception("Existing outputs are not directly accessible");
+        if (!((string)Call(window, "CurrentResultPath")).EndsWith("run-A-result.xlsx") || !Field<TextBox>(window, "excelFile").Text.EndsWith("B.xlsx")) throw new Exception("Result shortcut must follow A, not selected input B");
+        if (!Field<Label>(window, "note").Text.Contains("阶段结果")) throw new Exception("Stage result is not labelled");
+        var final = Model(false, false, true); var finalOutput = (Dictionary<string, object>)((Dictionary<string, object>)final["artifacts"])["result"];
+        finalOutput["kind"] = "final"; finalOutput["label"] = "全流程结果"; finalOutput["processedRows"] = 6; Apply(window, final);
+        if (!Field<Label>(window, "note").Text.Contains("全流程结果")) throw new Exception("Final result is not labelled");
+        Apply(window, Model(false, false, false)); if (Field<Button>(window, "openResult").Enabled || Field<Button>(window, "openBackups").Enabled) throw new Exception("Missing outputs must not be presented as available");
+        if (typeof(RunnerWindow).GetField("stop", BindingFlags.Instance | BindingFlags.NonPublic) != null) throw new Exception("Redundant Stop button remains");
     }
     static void Layout(Control control) {
         control.PerformLayout();

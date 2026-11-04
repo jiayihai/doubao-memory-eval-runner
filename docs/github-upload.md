@@ -1,13 +1,19 @@
-# 上传到GitHub
+# 更新 GitHub 仓库
 
-此目录已经整理为仓库根目录，尚未连接账号或上传。
+本地“豆包测评执行器_GitHub发布版”是可上传的当前快照，来源于唯一开发主线。它包含 README、安装入口、锁文件和合成测试表；不含 node_modules、真实运行记录或私有表格运行库。版本目录“豆包测评执行器_GitHub发布版_1.8.0”保留同一版本快照。旧 1.6.0 已移到本地发布归档。
 
-1. 登录自己的GitHub，创建仓库，可命名为doubao-memory-eval-runner；面试直接分享可选择Public，可见性由本人决定。
-2. 使用GitHub网页的Add file → Upload files，上传**这个目录内部的文件与子目录**，包括README.md、.gitignore和.gitattributes；不要上传整个项目开始或面试归档目录。
-3. 提交后，浏览器中该仓库的URL就是可分享链接。根README会展示项目介绍。
+## 上传内容
 
-官方操作说明：[上传文件到仓库](https://docs.github.com/en/repositories/working-with-files/managing-files/adding-a-file-to-a-repository)。
+仓库根目录应直接看到 README.md、package.json、安装依赖.cmd、core/、ui/、examples/ 等，不要在根目录外面再套一层发布文件夹。
 
-如果使用Git工具，先在仓库目录检查git status，确认没有运行数据、node_modules、.env、真实结果或本机配置，再提交。不要使用包含运行记录的原开发目录执行git add .。
+更新已有仓库时，推荐用 Git 或 GitHub Desktop 同步整个快照并审阅新增、修改、删除项，再提交和推送。这样旧文件的删除也能同步。浏览器上传时，在仓库点击 Add file → Upload files，将发布目录里的文件及子文件夹一起拖入上传区域；系统的“选择文件”对话框不能直接选文件夹。单纯追加上传不会自动删除仓库旧文件。
 
-本次未选择开源许可证；需要开放代码使用权限时，由项目作者另行选择。也没有提供exe下载或独立安装包。后续若发布Release，需明确其运行依赖，不能把专用外部表格运行库一并上传。
+项目现有仓库为 https://github.com/jiayihai/doubao-memory-eval-runner 。本次仅整理本地发布目录和 ZIP，没有替作者推送线上。
+
+## 建议填写
+
+- 仓库简介：Windows 豆包桌面端长期记忆测评工具，支持 Excel 流程驱动、暂停恢复、回复备份与结果回填。
+- 提交说明：Update v1.8.0 public installation, user guide and starter workbook
+- 如创建 Release：标签 v1.8.0，标题 V1.8.0：公开依赖与入门指南，附件使用 doubao-memory-eval-runner-1.8.0.zip。
+
+exe 可以作为 Release 附件随 ZIP 提供；源码仓库通过安装依赖.cmd 自动安装依赖并构建 exe。安装后产生的 node_modules、运行数据、对话导出和结果表不上传。不要只上传 ZIP 而省略仓库源码，否则访问者不方便直接阅读 README 和代码。
