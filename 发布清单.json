@@ -189,8 +189,8 @@
     },
     {
       "path": "tests/ProgressBarCheck.cs",
-      "bytes": 18156,
-      "sha256": "ac107c47c08029e7ad6f2762c6eb953fd799d514aec2ad83406a5b0cccaa7cd5"
+      "bytes": 20193,
+      "sha256": "26c51b0956fa8f2612127b6c50d82d7a9fdc823834bd1f6c57091df2e3d41e38"
     },
     {
       "path": "tests/automatic-results.test.mjs",
@@ -339,8 +339,8 @@
     },
     {
       "path": "ui/RunnerWindow.cs",
-      "bytes": 39126,
-      "sha256": "d3f57613b3166289b7ed3df6c177166bcef26edea8ea9bfc77811334a3ac77ff"
+      "bytes": 39447,
+      "sha256": "5629db78795657ca399457e339430f9fa6e71195343f9f17b4a4688c05667652"
     },
     {
       "path": "安装依赖.cmd",
@@ -365,12 +365,13 @@
     {
       "path": "豆包测评执行器V1_1.8.1.exe",
       "bytes": 69632,
-      "sha256": "ca7a822316cbd702ed6ac83297541436f0128126d471c467ebb50abcd8dec7b6"
+      "sha256": "3f4a82aedef783ade093dd024789ba9e96034af5356717c63fd1cb7e875ea6a2"
     },
     {
       "path": "豆包测评执行器V1_1.8.1.exe.config",
       "bytes": 357,
       "sha256": "42ef4e813c1850e831cf32a9876072d1ee4e77023472d262533808f3fc6b5cfb"
     }
-  ]
+  ],
+  "hotfix": "preserve-local-executable-selection"
 }

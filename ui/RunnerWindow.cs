@@ -33,7 +33,7 @@ internal sealed class RunnerWindow : Form {
     readonly HttpClient http = new HttpClient();
     Process backend;
     string endpoint, folder, logText = "", previewPath = "", excelPath = "", excelHash = "";
-    bool ready, polling, operation, active, resumable, closing, closed, loadedRun, generatingResults, canGenerateResults, canHandleManual, pauseRequested, selectionChosen;
+    bool ready, polling, operation, active, resumable, closing, closed, loadedRun, generatingResults, canGenerateResults, canHandleManual, pauseRequested, selectionChosen, executableInitialized;
     readonly Timer timer = new Timer { Interval = 750 };
     readonly TextBox executable = new TextBox(), account = new TextBox(), logs = new TextBox(), excelFile = new TextBox();
     readonly Label timingHint = new Label();
@@ -79,6 +79,8 @@ internal sealed class RunnerWindow : Form {
         for (int i = 0; i < 4; i++) config.RowStyles.Add(new RowStyle(SizeType.Absolute, 38));
         config.Controls.Add(new Label { Text = "豆包路径", AutoSize = true, Anchor = AnchorStyles.Left }, 0, 0);
         executable.Text = Environment.GetEnvironmentVariable("DOUBAO_EXECUTABLE") ?? ""; executable.Dock = DockStyle.Fill; executable.AccessibleName = "豆包程序路径";
+        // A local selection/edit owns this field, even while the initial status request is in flight.
+        executable.TextChanged += delegate { executableInitialized = true; };
         config.Controls.Add(executable, 1, 0); config.SetColumnSpan(executable, 3);
         var browse = new Button { Text = "选择程序", Dock = DockStyle.Fill }; config.Controls.Add(browse, 4, 0);
         browse.Click += delegate { using (var dialog = new OpenFileDialog { Filter = "豆包程序|Doubao.exe|可执行程序|*.exe", Title = "选择 Doubao.exe" }) { if (dialog.ShowDialog() == DialogResult.OK) executable.Text = dialog.FileName; } };
@@ -333,7 +335,8 @@ internal sealed class RunnerWindow : Form {
         connection.Text = BoolOf(connected, "ok") ? "已连接" : "未连接";
         connection.ForeColor = BoolOf(connected, "ok") ? Color.FromArgb(27, 123, 84) : Color.FromArgb(126, 98, 57);
         if (BoolOf(connected, "ok")) account.Text = TextOf(connected, "account"); else if (run != null) account.Text = TextOf(run, "account");
-        if (!active && !executable.Focused && settings != null && !operation) executable.Text = TextOf(settings, "executable");
+        // Load saved settings once; polling must not replace an unsaved local path with stale settings.
+        if (!executableInitialized && settings != null) { executable.Text = TextOf(settings, "executable"); executableInitialized = true; }
         canGenerateResults = BoolOf(ObjectOf(view, "resultGeneration"), "available") && !BoolOf(view, "busy");
         canHandleManual = BoolOf(run, "manualAvailable");
         if (run != null && !loadedRun) {

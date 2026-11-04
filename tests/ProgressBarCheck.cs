@@ -12,6 +12,7 @@ internal static class ProgressBarCheck {
     }
     static void Run() {
         Application.EnableVisualStyles();
+        CheckExecutableSettings();
         using (var bar = new CompletionBar()) {
             bar.Size = new Size(400, 12);
             for (int completed = 0; completed <= 4; completed++) {
@@ -120,6 +121,34 @@ internal static class ProgressBarCheck {
                 Console.WriteLine("Manual step confirmation, reply and layout OK, scale=" + scale);
             }
         }
+    }
+    static void CheckExecutableSettings() {
+        foreach (string saved in new string[] { "", @"D:\old\app\Doubao.exe" }) {
+            using (var window = new RunnerWindow()) {
+                var snapshot = Model(false, false, false);
+                snapshot["settings"] = new Dictionary<string, object> { { "executable", saved } };
+                var input = Field<TextBox>(window, "executable");
+                Apply(window, snapshot);
+                if (input.Text != saved) throw new Exception("Saved executable not loaded on first status");
+                string selected = @"D:\new\app\Doubao.exe";
+                input.Text = selected; // The picker writes this same Text property; the field is unfocused.
+                for (int i = 0; i < 6; i++) Apply(window, snapshot);
+                if (input.Text != selected) throw new Exception("Status polling erased or reverted the selected executable");
+                var options = (Dictionary<string, object>)Call(window, "Options");
+                if ((string)options["executable"] != selected) throw new Exception("Connect/launch lost the selected executable");
+                input.Text = ""; Apply(window, snapshot);
+                if (input.Text != "") throw new Exception("Status polling undid an intentional path clear");
+            }
+        }
+        using (var window = new RunnerWindow()) {
+            var input = Field<TextBox>(window, "executable");
+            input.Text = @"D:\selected-before-first-status\app\Doubao.exe";
+            var snapshot = Model(false, false, false);
+            snapshot["settings"] = new Dictionary<string, object> { { "executable", "" } };
+            Apply(window, snapshot);
+            if (input.Text != @"D:\selected-before-first-status\app\Doubao.exe") throw new Exception("Delayed initial status erased a local selection");
+        }
+        Console.WriteLine("Executable: fresh/saved settings, repeated stale polling, command options, clear and initial-status race OK");
     }
     static T Field<T>(object instance, string name) { return (T)instance.GetType().GetField(name, BindingFlags.Instance | BindingFlags.NonPublic).GetValue(instance); }
     static object Call(object instance, string method, params object[] args) { return instance.GetType().GetMethod(method, BindingFlags.Instance | BindingFlags.NonPublic).Invoke(instance, args); }
