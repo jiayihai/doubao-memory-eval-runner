@@ -19,8 +19,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 17994,
-      "sha256": "a5d56fb7f48a0e92acc93b5dc69849e52043ac512f900e19ef42ec274035ac61"
+      "bytes": 18779,
+      "sha256": "833d6b65226e5e89a77d5e816ef05e44e1bea5a8e8f0ae8e2b5400c0bb2d86eb"
     },
     {
       "path": "adapters/cdp.mjs",
