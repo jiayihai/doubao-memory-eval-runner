@@ -2,7 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import ExcelJS from 'exceljs';
 import JSZip from 'jszip';
-import { mkdtemp,readFile,readdir,rm } from 'node:fs/promises';
+import { mkdtemp,readFile,readdir,rm,mkdir,writeFile } from 'node:fs/promises';
+import { createRequire } from 'node:module';
 import { tmpdir } from 'node:os';
 import { join,resolve,sep } from 'node:path';
 import { hash } from '../core/store.mjs';
@@ -10,9 +11,53 @@ import { inspectDatasetFile } from '../tools/spreadsheets/preview-worker.mjs';
 import { compileExcelDataset } from '../core/excel-dataset.mjs';
 import { writeExcelResult } from '../tools/spreadsheets/excel-results-worker.mjs';
 import { createFormulaEvaluator,cacheFormulaResult } from '../tools/spreadsheets/formula-cache.mjs';
-import { loadBook,normalizeSpreadsheetXml,normalizeRelationships,writeOutput,plainValue,formulaOf,snapshotBook,assertPreserved } from '../tools/spreadsheets/excel-book.mjs';
+import { loadBook,readBook,normalizeSpreadsheetXml,normalizeRelationships,writeOutput,plainValue,formulaOf,snapshotBook,assertPreserved } from '../tools/spreadsheets/excel-book.mjs';
 
 const fixture=()=>{const book=new ExcelJS.Workbook();return {book,sheet:book.addWorksheet('执行表')};};
+const excelRequire=createRequire(import.meta.resolve('exceljs'));
+const archiveRequire=createRequire(excelRequire.resolve('archiver'));
+async function dependencyScratch(t){
+  const directory=await mkdtemp(join(tmpdir(),'doubao-dependency-'));
+  t.after(async()=>{assert.ok(resolve(directory).startsWith(resolve(tmpdir())+sep));await rm(directory,{recursive:true});});
+  await mkdir(join(directory,'nested'));await mkdir(join(directory,'skip'));
+  await writeFile(join(directory,'root.txt'),'根目录');await writeFile(join(directory,'nested','reply.txt'),'回复全文');
+  await writeFile(join(directory,'nested','other.json'),'{}');await writeFile(join(directory,'skip','ignored.txt'),'忽略');
+  return directory;
+}
+test('UUID修复版本保留ExcelJS的CommonJS v4接口，并拒绝v5越界缓冲区',()=>{
+  const uuid=excelRequire('uuid'),id=uuid.v4();assert.ok(uuid.validate(id));assert.equal(uuid.version(id),4);
+  const namespace='6ba7b810-9dad-11d1-80b4-00c04fd430c8';
+  assert.throws(()=>uuid.v5('test',namespace,new Uint8Array(8),4),RangeError);
+  const bytes=new Uint8Array(16);uuid.v5('test',namespace,bytes,0);assert.ok(uuid.validate(uuid.stringify(bytes)));
+});
+test('归档工具与新版glob及minimatch组合保留递归和忽略规则',async t=>{
+  const directory=await dependencyScratch(t),utilsRequire=createRequire(archiveRequire.resolve('archiver-utils'));
+  const glob=utilsRequire('glob'),options={cwd:directory,ignore:'skip/**',nodir:true};
+  const normalize=paths=>paths.map(path=>path.replaceAll('\\','/')).sort();
+  const asyncFiles=await glob.glob('**/*.txt',options);
+  assert.deepEqual(normalize(asyncFiles),['nested/reply.txt','root.txt']);
+  assert.deepEqual(normalize(glob.sync('**/*.txt',options)),['nested/reply.txt','root.txt']);
+  assert.deepEqual(normalize(archiveRequire('archiver-utils').file.expand({cwd:directory,nodir:true},['**/*.txt','!skip/**'])),['nested/reply.txt','root.txt']);
+});
+test('archiver的glob路径筛选和ZIP归档在依赖升级后可完整读取',async t=>{
+  const directory=await dependencyScratch(t),archive=excelRequire('archiver')('zip'),chunks=[];
+  const done=new Promise((resolve,reject)=>{archive.on('data',chunk=>chunks.push(chunk));archive.once('error',reject);archive.once('warning',reject);archive.once('end',resolve);});
+  archive.glob('**/*.txt',{cwd:directory,ignore:'skip/**'});await Promise.all([archive.finalize(),done]);
+  const zip=await JSZip.loadAsync(Buffer.concat(chunks));
+  assert.deepEqual(Object.keys(zip.files).filter(name=>!zip.files[name].dir).sort(),['nested/reply.txt','root.txt']);
+  assert.equal(await zip.file('nested/reply.txt').async('string'),'回复全文');
+});
+test('ExcelJS流式写入兼容修复后的归档与UUID依赖，数据和格式可重读',async t=>{
+  const directory=await dependencyScratch(t),file=join(directory,'stream.xlsx');
+  const book=new ExcelJS.stream.xlsx.WorkbookWriter({filename:file,useSharedStrings:true,useStyles:true});
+  const sheet=book.addWorksheet('兼容检查');sheet.getCell('A1').value='回复';sheet.getCell('A1').font={bold:true};sheet.getRow(1).commit();
+  sheet.addRow(['=原样回答\n第二行']).commit();await book.commit();
+  const loaded=await readBook(file);assert.equal(loaded.getWorksheet(1).getCell('A2').value,'=原样回答\n第二行');
+  assert.equal(loaded.getWorksheet(1).getCell('A1').font.bold,true);assert.equal(formulaOf(loaded.getWorksheet(1).getCell('A2')),'');
+  const rows=[];
+  for await(const streamedSheet of new ExcelJS.stream.xlsx.WorkbookReader(file))for await(const row of streamedSheet)rows.push(row.getCell(1).text);
+  assert.deepEqual(rows,['回复','=原样回答\n第二行']);
+});
 test('公开库关联公式按实际引用计算，保存后缓存、公式及共享公式均保留',async()=>{
   const {book,sheet}=fixture();sheet.addRows([['ID','回答','状态'],['Q1','=原文\n#N/A','已完成'],['Q2','第二条','已完成']]);
   const q=book.addWorksheet('问题表');q.addRows([['Q1'],['Q2']]);

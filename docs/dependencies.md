@@ -1,6 +1,6 @@
 # 依赖与 Excel 兼容范围
 
-1.8.0 使用 npm 公共依赖 exceljs@4.4.0（MIT）、jszip@3.10.1（MIT 或 GPLv3，按其 MIT 选项使用）；精确版本和完整依赖链在 package-lock.json 中。安装使用 npm ci，不需要私有注册表、作者电脑目录连接、专用运行库或 Python。源码安装会用 Windows .NET Framework 编译器构建窗口。
+1.8.1 继续使用 npm 公共依赖 exceljs@4.4.0（MIT）、jszip@3.10.1（MIT 或 GPLv3，按其 MIT 选项使用）；精确版本和完整依赖链在 package-lock.json 中。安装使用 npm ci，不需要私有注册表、作者电脑目录连接、专用运行库或 Python。源码安装会用 Windows .NET Framework 编译器构建窗口。
 
 - [ExcelJS 官方仓库与许可证](https://github.com/exceljs/exceljs)
 - [JSZip 官方仓库与许可证](https://github.com/Stuk/jszip)
@@ -14,8 +14,23 @@ ExcelJS 负责 xlsx 读写，不能自行重算公式。应用仅对待回填的
 
 图表、图片、透视表、宏、切片器及外部工作簿链接明确拒绝，避免静默丢失。不承诺保留任意 Excel 扩展对象；推荐使用附带的普通双表模板。旧模板的 XML 命名空间及内部关系地址仅在内存中规范化，原文件不改写。长回答不截断；超过单元格 32767 字符限制时报错，原始回复备份仍保留。
 
-## 安装检查记录（2026-11-04）
+## 1.8.1 依赖修复（2026-11-04）
+
+保留 ExcelJS 4.4.0 和原 archiver 5.x，通过 package.json 的 overrides 与锁文件安装兼容的修复组合：
+
+| 依赖范围 | 固定版本 | 用途 |
+| --- | --- | --- |
+| exceljs → uuid | 11.1.1 | 修复旧版本的缓冲区边界检查问题，并保留 CommonJS v4 接口。 |
+| exceljs → unzipper | 0.12.5 | 保持 ExcelJS 解压接口，移除依赖旧 glob 的 fstream/rimraf 链。 |
+| archiver-utils → glob | 14.0.3 | 与现代匹配器配套，保留归档工具使用的同步路径展开接口。 |
+| minimatch | 11.0.4 | 修复 glob 模式放大造成的拒绝服务问题。 |
+
+没有修改 node_modules、伪造包版本或隐藏 audit。仅把旧 glob 的 minimatch 强制升级会破坏接口；直接换新 archiver 也会与 ExcelJS 的部分流对象不兼容，因此这些试验组合未交付。当前组合额外验证 UUID 边界、递归与忽略规则、ZIP 归档和 ExcelJS 流式写入/读取，连同原有功能共 200 项离线检查。
+
+请用 npm ci 安装锁定的完整组合，不要删掉 overrides 后单独重装 ExcelJS。最新扫描结果及干净安装验证见 validation.md；0 项已知漏洞是扫描时点的结果，后续公告可能变化。fast-csv 的旧 lodash.isequal 可能仍有 deprecated（弃用）提示，它与此前 9 项漏洞告警不同，本次未隐藏该提示。
+
+## 1.8.0 历史安装检查记录（2026-11-04）
 
 依赖安装以官方 npm 注册表和锁文件为准，HTTPS 验证开启，安装脚本关闭 npm 包生命周期脚本。196 项离线回归通过，无跳过。
 
-本次 npm audit 报告安装依赖树有 9 项中危、0 高危、0 严重，主要为 ExcelJS 的间接归档依赖链以及旧 uuid。没有为了消除报告而强行跨主版本覆盖或降级 ExcelJS。当前业务只使用内存工作簿读写，没有使用流式目录归档、用户 glob 匹配或 uuid 的带缓冲区 v3/v5 接口；这不等于依赖没有风险。后续升级需重跑表格及恢复回归。具体公开公告：[minimatch](https://github.com/advisories/GHSA-g3hv-75wg-m249)、[uuid](https://github.com/advisories/GHSA-w5hq-g745-h8pq)。
+1.8.0 首次安装时，npm audit 报告安装依赖树有 9 项中危、0 高危、0 严重，主要为 ExcelJS 的间接归档依赖链以及旧 uuid。没有为了消除报告而强行跨主版本覆盖或降级 ExcelJS。当前业务只使用内存工作簿读写，没有使用流式目录归档、用户 glob 匹配或 uuid 的带缓冲区 v3/v5 接口；这不等于依赖没有风险。后续升级需重跑表格及恢复回归。具体公开公告：[minimatch](https://github.com/advisories/GHSA-g3hv-75wg-m249)、[uuid](https://github.com/advisories/GHSA-w5hq-g745-h8pq)。

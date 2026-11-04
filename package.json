@@ -1,6 +1,6 @@
 {
   "name": "doubao-memory-eval-runner",
-  "version": "1.8.0",
+  "version": "1.8.1",
   "private": true,
   "type": "module",
   "engines": {
@@ -14,5 +14,15 @@
     "exceljs": "4.4.0",
     "jszip": "3.10.1"
   },
-  "license": "UNLICENSED"
+  "license": "UNLICENSED",
+  "overrides": {
+    "exceljs": {
+      "uuid": "11.1.1",
+      "unzipper": "0.12.5"
+    },
+    "archiver-utils": {
+      "glob": "14.0.3"
+    },
+    "minimatch": "11.0.4"
+  }
 }

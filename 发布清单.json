@@ -1,5 +1,5 @@
 {
-  "version": "1.8.0",
+  "version": "1.8.1",
   "updated": "2026-11-04",
   "files": [
     {
@@ -14,13 +14,13 @@
     },
     {
       "path": "NOTICE.md",
-      "bytes": 929,
-      "sha256": "85ce39a333f335f0bba92067f6a65403ff6707cba285664cb82c1f88d8d81381"
+      "bytes": 1107,
+      "sha256": "9e4baf6dca5b14e1f8f9a897ef5ff45026c396e01d0ee82e5bf2d7068c15579d"
     },
     {
       "path": "README.md",
-      "bytes": 17310,
-      "sha256": "71fa6d2a54d7a6593f8371d47264838622624f5106453004ca22b62d6543a649"
+      "bytes": 17994,
+      "sha256": "a5d56fb7f48a0e92acc93b5dc69849e52043ac512f900e19ef42ec274035ac61"
     },
     {
       "path": "adapters/cdp.mjs",
@@ -134,18 +134,18 @@
     },
     {
       "path": "docs/dependencies.md",
-      "bytes": 2632,
-      "sha256": "792f208390d5bd15087ddc17083c15df4edc24fcb023f609ed48e6b02210ba87"
+      "bytes": 4060,
+      "sha256": "5fb05dba6bf9fa38e95baef35f6207b3036646a3eefff4170b5c0b938164483f"
     },
     {
       "path": "docs/github-upload.md",
-      "bytes": 1837,
-      "sha256": "1b268401b5a3ea60a6b00c1dd014dcf31e925af78eec06f01492f723924d8421"
+      "bytes": 2241,
+      "sha256": "f18e46a9d7c630b584d55b1a25ef942e2795ee345efe1385e90e6d0a6e895550"
     },
     {
       "path": "docs/validation.md",
-      "bytes": 1974,
-      "sha256": "7404c25c06980cd1ea41d06335f9bea8c3ad3c0cf0c982f879b5fcbc3eaaba62"
+      "bytes": 3355,
+      "sha256": "a50a540506e3afa5af99a1087bc87735b38dbbdd881435b42e7ea3a8107e6b4b"
     },
     {
       "path": "examples/README.md",
@@ -174,18 +174,18 @@
     },
     {
       "path": "package-lock.json",
-      "bytes": 93582,
-      "sha256": "e2feb58d00308c47366d0421d46c10cb6a5a85c3a20f2ac99bd78edbe96c77b9"
+      "bytes": 34950,
+      "sha256": "35d7f457640e67c1f9e0b959cf72a132a812dcc6a0888548853c659b362d77b2"
     },
     {
       "path": "package.json",
-      "bytes": 346,
-      "sha256": "6e37b4fc3dff03d7d15ee1a6e583e30c229ca2b5be57124ba704e176ad7620af"
+      "bytes": 523,
+      "sha256": "33581a0cd9e2f21154dfbc07983c8171615aa8a9dec954a251ba4e00a6677367"
     },
     {
       "path": "server.mjs",
       "bytes": 29126,
-      "sha256": "f71299c00978ebc410f37874d6fc70605dee6c88ff44085cfe9083c1b23b7ba0"
+      "sha256": "571cef98af2e3daeac1f1d29d3b15e39cb8a32279e09dd86854c5335338b9194"
     },
     {
       "path": "tests/ProgressBarCheck.cs",
@@ -239,8 +239,8 @@
     },
     {
       "path": "tests/public-excel.test.mjs",
-      "bytes": 7174,
-      "sha256": "f35b0223dcf63e6cd2241ba6f736348b5f493e0b28c8d3667f306d6ca9291471"
+      "bytes": 10918,
+      "sha256": "f77d2d6dd258e0be41a957f4a83e1b960448cc6e08f8556da12a6fcfae746398"
     },
     {
       "path": "tests/reply-archive.test.mjs",
@@ -340,7 +340,7 @@
     {
       "path": "ui/RunnerWindow.cs",
       "bytes": 39126,
-      "sha256": "d1398fddda231867e2d1deb00d484ca371a620c40e2684ec786e954944c53b60"
+      "sha256": "d3f57613b3166289b7ed3df6c177166bcef26edea8ea9bfc77811334a3ac77ff"
     },
     {
       "path": "安装依赖.cmd",
@@ -349,8 +349,8 @@
     },
     {
       "path": "安装依赖.ps1",
-      "bytes": 2236,
-      "sha256": "8bec0aaba5fa5f2401cea5ed2eaa78af513c48991c06d07f04bd84ebc20ca44c"
+      "bytes": 2391,
+      "sha256": "5f74e82499dcd3636630dd58374c51953940c2c3838a9944aecb1fd42c36d775"
     },
     {
       "path": "执行设置.json",
@@ -363,12 +363,12 @@
       "sha256": "1712c0ffbfa80fce7defb4eccbe61e6ae519124ba3b825779177e8ef44fde2e7"
     },
     {
-      "path": "豆包测评执行器V1_1.8.0.exe",
+      "path": "豆包测评执行器V1_1.8.1.exe",
       "bytes": 69632,
-      "sha256": "1d62eb9515ddd6c5a6d803482dd74e59ffb1ecc3ac63201f51c300a922e126cf"
+      "sha256": "ca7a822316cbd702ed6ac83297541436f0128126d471c467ebb50abcd8dec7b6"
     },
     {
-      "path": "豆包测评执行器V1_1.8.0.exe.config",
+      "path": "豆包测评执行器V1_1.8.1.exe.config",
       "bytes": 357,
       "sha256": "42ef4e813c1850e831cf32a9876072d1ee4e77023472d262533808f3fc6b5cfb"
     }

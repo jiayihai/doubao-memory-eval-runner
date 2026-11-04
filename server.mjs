@@ -66,7 +66,7 @@ export class Controller {
     const renameJobs = Object.values(s?.renameJobs || {});
     const archived = s?.completions.filter(x=>x.replyArchive?.status==='saved') || [];
     const manual=Object.values(s?.manualResults||{});
-    return { version: '1.8.0', active: this.active, busy: this.busy || !!this.automaticResults?.running || !!this.previewTask || !!this.resultTask, connection: this.connection, settings: this.settings,
+    return { version: '1.8.1', active: this.active, busy: this.busy || !!this.automaticResults?.running || !!this.previewTask || !!this.resultTask, connection: this.connection, settings: this.settings,
       logs: this.logs, directory: this.directory || this.dataDir,
       artifacts: readRunArtifacts({ directory:this.directory, state:s, dataset:data, automaticRecord:this.automaticResults?.record }),
       resultGeneration: { active: !!this.resultTask || !!this.automaticResults?.running, template: templatePath(this.root),
@@ -371,6 +371,6 @@ export async function serve({ port = 0, token = process.env.DOUBAO_RUNNER_TOKEN,
   return { server, controller, port: server.address().port };
 }
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
-  serve().then(({ port }) => process.stdout.write(JSON.stringify({ port, version: '1.8.0' }) + '\n'))
+  serve().then(({ port }) => process.stdout.write(JSON.stringify({ port, version: '1.8.1' }) + '\n'))
     .catch(error => { process.stderr.write(error.message + '\n'); process.exitCode = 1; });
 }

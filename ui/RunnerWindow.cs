@@ -60,7 +60,7 @@ internal sealed class RunnerWindow : Form {
         b.Cursor = Cursors.Hand;
     }
     public RunnerWindow() {
-        Text = "豆包测评执行器 V1.8.0"; ClientSize = new Size(980, 840); MinimumSize = new Size(930, 780);
+        Text = "豆包测评执行器 V1.8.1"; ClientSize = new Size(980, 840); MinimumSize = new Size(930, 780);
         json.MaxJsonLength = 20 * 1024 * 1024;
         StartPosition = FormStartPosition.CenterScreen; BackColor = Color.FromArgb(244, 247, 251);
         Font = new Font("Microsoft YaHei UI", 9F); AutoScaleMode = AutoScaleMode.Dpi;

@@ -18,4 +18,5 @@ if ($LASTEXITCODE -ne 0) { throw '依赖安装失败。请检查到 registry.npm
 & $nodeExecutable --input-type=module -e "import ExcelJS from 'exceljs'; import JSZip from 'jszip'; const b=new ExcelJS.Workbook(); b.addWorksheet('InstallCheck').getCell('A1').value='OK'; const data=await b.xlsx.writeBuffer(); const copy=new ExcelJS.Workbook(); await copy.xlsx.load(data); if(copy.getWorksheet(1).getCell('A1').value!=='OK')throw new Error('Excel dependency check failed'); console.log('ExcelJS + JSZip: OK');"
 if ($LASTEXITCODE -ne 0) { throw 'Excel 依赖验证失败，尚未完成安装。' }
 & (Join-Path $PSScriptRoot '构建窗口.ps1')
-Write-Output '安装完成。请打开本目录的豆包测评执行器V1_1.8.0.exe，并在界面选择实际豆包程序路径。'
+$installedPackage = Get-Content -LiteralPath (Join-Path $PSScriptRoot 'package.json') -Raw -Encoding UTF8 | ConvertFrom-Json
+Write-Output ('安装完成。请打开本目录的豆包测评执行器V1_' + $installedPackage.version + '.exe，并在界面选择实际豆包程序路径。')
