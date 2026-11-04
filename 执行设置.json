@@ -1,0 +1,5 @@
+{
+  "confirmSeconds": 90,
+  "recoverySeconds": 90,
+  "responseSeconds": 600
+}

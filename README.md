@@ -10,16 +10,71 @@
 
 ### 1. 准备环境并安装
 
-1. 使用 Windows 10/11。安装 [Node.js](https://nodejs.org/) **22.15 或以上版本（包含 npm）**，安装豆包桌面版并登录。窗口需要 .NET Framework 4.8；缺少时通过微软官方渠道安装。
-2. 在 GitHub 仓库点击 **Code → Download ZIP**，解压整个项目到可写目录，例如“文档”中的测试文件夹。要先解压，再运行里面的文件。
-3. 双击 **安装依赖.cmd**，等待出现“安装完成”。它按锁文件从 npm 官方注册表安装依赖、验证 Excel 读写，并构建 exe；首次需要联网。
-4. 打开同目录新生成的 **豆包测评执行器V1_1.8.0.exe**。从 GitHub 下载的源码可能没有 exe，安装脚本会生成它。日常使用不必重复安装。
+建议使用 64 位 Windows 10/11。通常只需安装 Node.js 和豆包桌面版，再运行项目自带安装入口；.NET Framework 先按下面的方法判断是否需要补装。
 
-如需从命令行安装，在项目目录运行：
+#### A. 安装 Node.js（两种方式选一种）
+
+方式一：打开 [Node.js 官网下载页](https://nodejs.org/en/download)，选择 LTS 版本的 Windows Installer（.msi），按安装向导完成，保留 npm 和添加到 PATH 的选项。需要 Node.js 22.15 或以上版本。
+
+方式二：在开始菜单搜索并打开“Windows PowerShell”，运行以下命令，按提示完成安装：
+
+```powershell
+winget install --id OpenJS.NodeJS.LTS --exact --source winget
+```
+
+如果提示找不到 winget，使用官网安装方式即可。此命令只安装 Node.js，项目依赖在后面的“安装依赖.cmd”中安装。
+
+安装完成后关闭原终端，重新打开 PowerShell，分别执行：
+
+```powershell
+node --version
+npm.cmd --version
+```
+
+两条命令都应输出版本号，Node.js 不低于 v22.15.0。已经满足要求的电脑跳过重装。使用 npm.cmd 可以避免 PowerShell 将命令解析为受执行策略限制的 npm.ps1。
+
+#### B. .NET Framework 通常无需另外安装
+
+窗口使用 .NET Framework 4.8。Windows 11 自带相应版本，较新的 Windows 10 也已包含；已有 4.8 或 4.8.1 时直接使用，不要卸载或降级。[微软的 Windows 随附版本说明](https://learn.microsoft.com/en-us/dotnet/framework/install/on-windows-and-server)
+
+想先确认环境，可在 PowerShell 复制整段检查命令。它只读注册表，不会安装或修改系统：
+
+```powershell
+$netRelease = (Get-ItemProperty -LiteralPath 'HKLM:\SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full' -Name Release -ErrorAction SilentlyContinue).Release
+if ($netRelease -ge 528040) {
+    Write-Output '.NET Framework 4.8 或更高版本已安装，可以继续。'
+} else {
+    Write-Output '未检测到 .NET Framework 4.8，请按下方官方链接安装后再试。'
+}
+```
+
+显示“已安装”就继续下一步。仅在检查未满足要求时，打开 [微软 .NET Framework 4.8 下载页](https://dotnet.microsoft.com/en-us/download/dotnet-framework/net48)，点击 **Download .NET Framework 4.8 Runtime**，下载后运行安装程序，按向导完成；若提示重启，重启后再运行项目安装入口。若安装程序提示已有相同或更高版本，则无需继续安装。
+
+普通用户不需要为运行窗口安装整套 Visual Studio；这里的 .NET Framework 4.8 与 .NET 8/9 等是不同产品，按上面的链接选择即可。检查阈值依据[微软的版本检测说明](https://learn.microsoft.com/en-us/dotnet/framework/install/how-to-determine-which-versions-are-installed)。
+
+本项目安装时还会调用系统 .NET Framework 目录中的 C# 编译器。仅当出现“未找到 .NET Framework C# 编译器”时，可以检查：
+
+```powershell
+Test-Path (Join-Path $env:WINDIR 'Microsoft.NET\Framework64\v4.0.30319\csc.exe')
+```
+
+应返回 True。若框架版本已满足但这里返回 False，请保留该结果和安装报错反馈作者，不必反复安装不同版本的 .NET SDK。
+
+#### C. 安装项目并打开窗口
+
+1. 安装豆包桌面版并登录。后续由执行器启动豆包并检查连接。
+2. 在 GitHub 仓库点击 **Code → Download ZIP**，解压整个项目到可写目录，例如“文档”中的测试文件夹。要先解压，再运行里面的文件。
+3. 确认解压后的同一目录中有 README.md、package.json、安装依赖.cmd、安装依赖.ps1、构建窗口.ps1、执行设置.json，以及 core、ui、examples 等子文件夹。构建窗口.ps1、执行设置.json 应在项目根目录，不能放进 tools 子目录。
+4. 双击 **安装依赖.cmd**，等待出现“安装完成”。它按锁文件从 npm 官方注册表安装依赖、验证 Excel 读写，并构建 exe；首次需要联网。如果提示错误，先处理该错误，不把失败当作安装完成。
+5. 打开同目录的 **豆包测评执行器V1_1.8.0.exe**。从 GitHub 下载的源码可能没有 exe，安装脚本会生成它；发布包也可能已附带编译好的 exe。日常使用只需打开 exe，不必重复安装。
+
+如希望通过命令行安装：在解压后的项目文件夹中，点击资源管理器地址栏，输入 `powershell` 后回车，再运行：
 
 ```powershell
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\安装依赖.ps1
 ```
+
+命令中的执行策略只对该次 PowerShell 进程生效，不需要修改系统的全局执行策略。安装成功后，下面的“连接豆包 → 选择测试表 → 开始”步骤与双击安装方式一致。
 
 ### 2. 连接豆包
 
